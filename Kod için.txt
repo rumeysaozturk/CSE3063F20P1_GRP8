@@ -1,4 +1,4 @@
-
+Herkes bir ÅŸeyler eklesin silsin dÃ¼zeltelim
 CLASS 1----------
 Dataset
 
@@ -26,10 +26,10 @@ JSON FILE 'dan oku
 Objeleri arraylist'e atabiliriz.
 1.iteration'da random atama var.
 
-User sayısını 1.iteration'da random mu atayacağız, sayısına nasıl karar veriyoruz?
+User sayÄ±sÄ±nÄ± 1.iteration'da random mu atayacaÄŸÄ±z, sayÄ±sÄ±na nasÄ±l karar veriyoruz?
 
 
-HOCANIN DİKKAT ETTİKLERİ
+HOCANIN DÄ°KKAT ETTÄ°KLERÄ°
 
 1-attribute'lar private
-2-Genelde attribute type object type olmalı. 
+2-Genelde attribute type object type olmalÄ±. 
