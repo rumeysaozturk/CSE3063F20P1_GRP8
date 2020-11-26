@@ -1,0 +1,35 @@
+
+CLASS 1----------
+Dataset
+
+Attributes 
+dataset id
+dataset name
+
+
+CLASS 2----------
+Labels
+
+maxLabelNumber
+labelID
+labelText
+
+CLASS 3---------------
+Instances
+
+instanceID
+instanceText
+
+
+BASAMAKLAR 
+JSON FILE 'dan oku
+Objeleri arraylist'e atabiliriz.
+1.iteration'da random atama var.
+
+User sayýsýný 1.iteration'da random mu atayacaðýz, sayýsýna nasýl karar veriyoruz?
+
+
+HOCANIN DÝKKAT ETTÝKLERÝ
+
+1-attribute'lar private
+2-Genelde attribute type object type olmalý. 
