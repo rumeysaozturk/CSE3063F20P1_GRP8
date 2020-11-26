@@ -5,8 +5,8 @@ Functional requirements :  (zorunlu olan)
 1-Users have an ID.
 2-Label is assigned on instance.
 
-Non Functional requirements : (zorunlu olmayan olarak anladým)
+Non Functional requirements : (zorunlu olmayan olarak anladÃ½m)
 1-There can be many users. 
-2-One instance can label many labels. 
+2-Labels can label many instances. 
 
 
