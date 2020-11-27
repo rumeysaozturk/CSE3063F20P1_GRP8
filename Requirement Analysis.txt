@@ -1,11 +1,12 @@
 REQUIREMENT ANALYSIS
 The main subject of the project is labeling the data in the textual data. Labeling  provides the data is more meaningful, informative, summarizer, accesible.
 
-Functional requirements :  (zorunlu olan)
-1-Users have an ID.
+Functional requirements :  (zorunlu olan,kural gibi what behaviours)
+1-There are labels and instances in the dataset.
+1-Users,Labels,Instances have an ID.
 2-Label is assigned on instance.
 
-Non Functional requirements : (zorunlu olmayan olarak anladým)
+Non Functional requirements : (zorunlu olmayan olarak anladım,daha çok how it works)
 1-There can be many users. 
 2-Labels can label many instances. 
 
