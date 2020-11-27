@@ -20,6 +20,16 @@ Instances
 instanceID
 instanceText
 
+CLASS 4---------------
+User
+
+userID
+
+MAIN CLASS------------
+Okuma 
+Random atama
+Yazma işlemleri
+
 
 BASAMAKLAR 
 JSON FILE 'dan oku
@@ -31,5 +41,5 @@ User sayısını 1.iteration'da random mu atayacağız, sayısına nasıl karar 
 
 HOCANIN DİKKAT ETTİKLERİ
 
-1-attribute'lar private
+1-classlardakivattribute'lar methodlar private
 2-Genelde attribute type object type olmalı. 
