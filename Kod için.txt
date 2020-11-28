@@ -1,10 +1,12 @@
 Herkes bir şeyler eklesin silsin düzeltelim
-CLASS 1----------
+CLASS 1---------- "başlangıç olarak bu attributeları maın class içinde tutmayı düşündüm"
 Dataset
 
 Attributes 
 dataset id
 dataset name
+
+
 
 
 CLASS 2----------
@@ -20,10 +22,16 @@ Instances
 instanceID
 instanceText
 
+Arraylist label <> "şöyle düşündüm : arrayliste instance labellerini atarız ,bu labelleri hangi userin atadığını tutmak için use type attribute tutarız .Eğer aynı instance 
+User user             başka user tarafından labellenecek olursa bir öncekini yazdırıp valuleri update yaparız."
+datetime
+
 CLASS 4---------------
 User
 
 userID
+userName 
+userType
 
 MAIN CLASS------------
 Okuma 
@@ -37,7 +45,7 @@ Objeleri arraylist'e atabiliriz.
 1.iteration'da random atama var.
 
 User sayısını 1.iteration'da random mu atayacağız, sayısına nasıl karar veriyoruz?
-
+"anladığıma göre kendi istediğimiz sayıda yapabileceğiz"
 
 HOCANIN DİKKAT ETTİKLERİ
 
