@@ -171,7 +171,18 @@ public class TEST {
 	       	    		k++;
 	   	    	    }	            
 	   	    	  } 
-	   	    	  
+			    
+	   	    	  for(l=0;l<storeOfLabel.size();l++) {
+	   	    		for(m=0; m <storeOfLabel.size();m++) {
+	   	    		 if(storeOfLabel.get(l).getLabelid() < storeOfLabel.get(m).getLabelid()) {      //swap elements if not in order
+	   	                 temp = storeOfLabel.get(l);   
+	   	                 storeOfLabel.set(l,storeOfLabel.get(m));
+	   	                 storeOfLabel.set(m,temp);    
+	   	               } 
+	   	    			
+	   	    		}
+	   	    		
+	   	    	  }
 	   	    		   	    	  
 	   	    	  
 	   	    	  element=new LABEL_ASSIGNMENT(listOfUser.get(currentUser),listOfInstance.get(i),storeOfLabel);
@@ -200,6 +211,53 @@ public class TEST {
 	    	  }
 	    	  numberOfUserIndex.clear();
 	      }
+		   
+		    //Creating a JSONObjectWrite object to write json file.
+	      JSONObject jsonObjectWrite = new JSONObject();
+	      JSONArray classAssignmentArray = new JSONArray();
+	      JSONObject classAssignmentObjectDetails;
+	      JSONArray writeLabels;
+	      JSONArray writeUsers;
+	      
+	     //jsonObjectWrite.putAll(jsonObject);
+	     
+	     for(i=0; i<listOfLabelAssignment.size(); i++) {
+
+		     classAssignmentObjectDetails = new JSONObject();
+		      
+	    	 classAssignmentObjectDetails.put("instance id",listOfLabelAssignment.get(i).getInstance().getInstanceid() );
+	    	 
+	    	 writeLabels = new JSONArray(); 
+	    	 
+	    	for(j=0; j<listOfLabelAssignment.get(i).getLabels().size(); j++) {
+	    		
+	    		writeLabels.add(listOfLabelAssignment.get(i).getLabels().get(j).getLabelid());
+	     }
+	    	 classAssignmentObjectDetails.put("class label ids", writeLabels );	    	 
+		     classAssignmentObjectDetails.put("user id", listOfLabelAssignment.get(i).getUser().getUserId() );	
+		     classAssignmentObjectDetails.put("datetime", listOfLabelAssignment.get(i).getDatetime() );
+	    
+	    	 classAssignmentArray.add(classAssignmentObjectDetails);
+  	
+	     }
+	    // System.out.println(listOfLabelAssignment.get(0).getInstance().getInstanceid());
+	     
+	     jsonObjectWrite.put("class label assignment:" ,classAssignmentArray);
+	      
+	      //Inserting key-value pairs into the json object
+	     
+	      try {
+	         FileWriter file = new FileWriter("output.json");
+	         file.write(jsonObjectWrite.toJSONString());
+	         file.flush();
+	         file.close();
+	      } catch (IOException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
+	      }
+	      System.out.println();
+	      System.out.println("JSON file created: "+jsonObjectWrite);
+	      
       
 	   }
 	   }
