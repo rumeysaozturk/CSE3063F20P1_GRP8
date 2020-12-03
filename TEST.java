@@ -59,4 +59,31 @@ public class TEST {
 		       INSTANCE a3=new INSTANCE(id1,text2);
 		        listl2.add(a3);
 	        
-	        
+	               
+	      }    
+	      
+	      for (int i=0;i<listl.size();i++) {
+	
+		     System.out.println(listl.get(i).getLabelid()+"  "+listl.get(i).getText());
+		        
+	      }
+	      
+	      
+	      for (int i=0;i<listl2.size();i++) {
+	
+		     System.out.println(listl2.get(i).getInstanceid()+"  "+listl2.get(i).getText());
+		        
+	      }
+	    
+	      
+	      
+	      } catch (FileNotFoundException e) {
+	         e.printStackTrace();
+	      } catch (IOException e) {
+	            e.printStackTrace();
+	      } catch (ParseException e) {
+	            e.printStackTrace();
+	      }
+	   }}
+
+
