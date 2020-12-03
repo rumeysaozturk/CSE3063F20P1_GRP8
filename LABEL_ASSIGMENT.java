@@ -1,25 +1,38 @@
-import java.time.LocalDateTime;
+
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
 import java.util.ArrayList;
 
-public class LABEL_ASSIGMENT {
-       private  USER user;
-       private INSTANCE ýnstance;
+
+public class LABEL_ASSIGNMENT {
+       private USER user;
+       private INSTANCE instance;
        private ArrayList<LABEL>labels=new ArrayList<>();
-       LocalDateTime datetime ;
+       private String datetime ;
        
-	public LABEL_ASSIGMENT() {
-		// TODO Auto-generated constructor stub
+  
+	public LABEL_ASSIGNMENT() {
 	}
 	
-	public LABEL_ASSIGMENT(USER user,INSTANCE ýnst,LABEL label[]) {
-		this.user=user;
-		this.ýnstance=ýnst;
-		datetime =LocalDateTime.now();
-	
-		
-		for(int i=0;i<label.length;i++) {
-			this.labels.add(label[i]);
-		}
+	public LABEL_ASSIGNMENT(USER user, INSTANCE inst,ArrayList<LABEL> labels) {
+		this.user = user;
+		this.instance=inst;
+		this.labels=labels;
+		Date date = new Date();
+		SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		String stringDate = dateFor.format(date);
+	    this.datetime = stringDate;
+	}
+
+	public String getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(String datetime) {
+		this.datetime = datetime;
 	}
 
 	public USER getUser() {
@@ -31,11 +44,11 @@ public class LABEL_ASSIGMENT {
 	}
 
 	public INSTANCE getInstance() {
-		return ýnstance;
+		return instance;
 	}
 
 	public void setInstance(INSTANCE instance) {
-		ýnstance = instance;
+		this.instance = instance;
 	}
 
 	public ArrayList<LABEL> getLabels() {
@@ -45,5 +58,5 @@ public class LABEL_ASSIGMENT {
 	public void setLabels(ArrayList<LABEL> labels) {
 		this.labels = labels;
 	}
-
+	
 }
