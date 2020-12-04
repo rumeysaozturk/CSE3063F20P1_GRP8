@@ -1,5 +1,6 @@
 
 
+
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,19 +8,24 @@ import java.util.Calendar;
 import java.util.ArrayList;
 
 
+
 public class LABEL_ASSIGNMENT {
-       private USER user;
-       private INSTANCE instance;
-       private ArrayList<LABEL>labels=new ArrayList<>();
-       private String datetime ;
-       
-  
+      private long instanceıd;
+	  private long  userıd;
+     
+      private ArrayList<LABEL>labels=new ArrayList<>();
+      private String datetime ;
+      
+      
+      
 	public LABEL_ASSIGNMENT() {
 	}
+		// TODO Auto-generated constructor stub
 	
-	public LABEL_ASSIGNMENT(USER user, INSTANCE inst,ArrayList<LABEL> labels) {
-		this.user = user;
-		this.instance=inst;
+	
+	public LABEL_ASSIGNMENT (long userıd, long inst,ArrayList<LABEL> labels) {
+		this.setUserıd(userıd);
+		this.setInstanceıd(inst);
 		this.labels=labels;
 		Date date = new Date();
 		SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -35,21 +41,6 @@ public class LABEL_ASSIGNMENT {
 		this.datetime = datetime;
 	}
 
-	public USER getUser() {
-		return user;
-	}
-
-	public void setUser(USER user) {
-		this.user = user;
-	}
-
-	public INSTANCE getInstance() {
-		return instance;
-	}
-
-	public void setInstance(INSTANCE instance) {
-		this.instance = instance;
-	}
 
 	public ArrayList<LABEL> getLabels() {
 		return labels;
@@ -58,5 +49,29 @@ public class LABEL_ASSIGNMENT {
 	public void setLabels(ArrayList<LABEL> labels) {
 		this.labels = labels;
 	}
+
+
+	public long getUserıd() {
+		return userıd;
+	}
+
+
+	public void setUserıd(long userıd) {
+		this.userıd = userıd;
+	}
+
+
+	public long getInstanceıd() {
+		return instanceıd;
+	}
+
+
+	public void setInstanceıd(long instanceıd) {
+		this.instanceıd = instanceıd;
+	}
 	
 }
+
+
+
+
