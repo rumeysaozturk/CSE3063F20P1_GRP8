@@ -23,7 +23,7 @@ public class TEST {
 	      JSONParser jsonParser = new JSONParser();
 	      int maxLabel=0;
 	      JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader("CES3063F20_LabelingProject_Input-2.json"));
-
+            JSONObject jsonuser = (JSONObject) jsonParser.parse(new FileReader("configuration.json"));
 	         //Parsing the contents of the JSON file
 	         //Forming URL
 	         //System.out.println("Contents of the JSON are: ");
@@ -46,6 +46,8 @@ public class TEST {
 	        
 	         //Iterating the contents of the array
 	    
+	          JSONArray jsonArrayuser = (JSONArray)(jsonuser.get("users"));
+	         System.out.println("");
 	        
 	        	      
 	      for (int i=0;i<jsonArray.size();i++) {
@@ -86,20 +88,22 @@ public class TEST {
 	      
 	      //GENERATE A USER****************************************************************
 		  ArrayList <USER> listOfUser =new ArrayList<USER>();
-		  USER user;
-		  int userID=1;
-	      int i=0;
+		  
+	   
 	      int j=0;
-	      int n=0;
-	      String userName="";
-	      int lengthUser=4;
-	      for(i=1; i<=lengthUser; i++) {
-	    	  userName="RandomLearningMechanism"+userID;
-	    	  user=new USER(userID,userName,"RandomBoot");
+	      int n=0;    
+		 int lengthUser=jsonArrayuser.size();
+	      for(int i=0; i<jsonArrayuser.size(); i++) {
+	    	  JSONObject a2=(JSONObject) jsonArrayuser.get(i);
+		        long id1 =(long) a2.get("user id");
+		        String text2=(String) a2.get("user name");
+		        String text3=(String) a2.get("user type");
+		        USER user = new USER(id1,text2,text3);
 	    	  listOfUser.add(user);
-	    	  userID++;
+	    	 
 	      }
-          
+	    
+	     
 	      //For loop for instance***********************************************************
 		  ArrayList <LABEL_ASSIGNMENT> listOfLabelAssignment =new ArrayList<LABEL_ASSIGNMENT>();
 		  LABEL_ASSIGNMENT element ; 
@@ -185,7 +189,7 @@ public class TEST {
 	   	    	  }
 	   	    		   	    	  
 	   	    	  
-	   	    	  element=new LABEL_ASSIGNMENT(listOfUser.get(currentUser),listOfInstance.get(i),storeOfLabel);
+	   	    	  element=new LABEL_ASSIGNMENT(listOfUser.get(currentUser).getUserId(),listOfInstance.get(i).getInstanceid().,storeOfLabel);
 	   	          listOfLabelAssignment.add(element);
 	   	          
 	   		  	  
@@ -221,7 +225,7 @@ public class TEST {
 	      
 	     //jsonObjectWrite.putAll(jsonObject);
 	     
-	     for(i=0; i<listOfLabelAssignment.size(); i++) {
+	/*     for(i=0; i<listOfLabelAssignment.size(); i++) {
 
 		     classAssignmentObjectDetails = new JSONObject();
 		      
@@ -242,15 +246,36 @@ public class TEST {
 	     }
 	    // System.out.println(listOfLabelAssignment.get(0).getInstance().getInstanceid());
 	     
-	     jsonObjectWrite.put("class label assignment:" ,classAssignmentArray);
+	     jsonObjectWrite.put("class label assignment:" ,classAssignmentArray);*/
 	      
 	      //Inserting key-value pairs into the json object
+	       Gson gson=new GsonBuilder().setPrettyPrinting().create();
+	     Gson gson1=new Gson();
+	     String json=gson.toJson(listOfLabelAssignment);
 	     
+	    
+	     String json1=gson1.toJson( listOfUser.get(0));
+	 
+	 //    St
+	    // jsonObjectWrite.put("class label assignment:" ,json);
+	     System.out.print(json);
 	      try {
 	         FileWriter file = new FileWriter("output.json");
-	         file.write(jsonObjectWrite.toJSONString());
+	         for(int c=0;c<listOfUser.size();c++) {
+
+	    	     String json2=gson1.toJson( listOfUser.get(c));
+	    	     file.write(json2+"\n");
+	         }
+	         file.write("{\"dataset id\":"+(jsonObject.get("dataset id").toString())+"\n"+"\"dataset name\":"
+	         +(jsonObject.get("dataset name")).toString()+"\n");
+	         file.write(json1+"\n");
+	         
+	         file.write("\n\"class label assigments\":\n");
+	         file.write(json);
+	         file.write("}");
 	         file.flush();
 	         file.close();
+	   
 	      } catch (IOException e) {
 	         // TODO Auto-generated catch block
 	         e.printStackTrace();
