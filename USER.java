@@ -1,6 +1,5 @@
-
 public class USER {
-      private int userId;
+      private long userId;
       private String name;
       private String usertype;
       
@@ -8,17 +7,22 @@ public class USER {
 		// TODO Auto-generated constructor stub
 	}
 
-	public USER(int userýd,String name,String usertype ) {
-		this.setUserId(userýd);
+	public USER(long userId,String name,String usertype ) {
+		this.setUserId(userId);
 		this.setName(name);
 		this.setUsertype(usertype);
 	}
+	
+	//Print user
+	public void printUser() {
+		System.out.println("user id: "+this.getUserId()+ " username: "+this.getName()+" user type: "+ this.getUserId()+ " is created.");
+	}
 
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 
@@ -37,10 +41,5 @@ public class USER {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
-	
-	
-	
-	
+
 }
