@@ -26,7 +26,7 @@ public class TEST {
 		  ArrayList<INSTANCE>listOfInstance=new ArrayList<>();
 	      JSONParser jsonParser = new JSONParser();
 	      int maxLabel=0;
-	      JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader("CES3063F20_LabelingProject_Input-2.json"));
+	      JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader("CES3063F20_LabelingProject_Input-1.json"));
 	      JSONObject jsonUser = (JSONObject) jsonParser.parse(new FileReader("configuration.json"));
 
 	         //Parsing the contents of the JSON file
@@ -93,7 +93,7 @@ public class TEST {
           
 	      
 	      
-	      //**********************RANDOM ASSIGNMENT*************************************************
+	      //**********************RANDOM ASSIGNMENT************************************************
 		  ArrayList <LABEL_ASSIGNMENT> listOfLabelAssignment =new ArrayList<LABEL_ASSIGNMENT>();
 		  LABEL_ASSIGNMENT element ; 
   	      ArrayList<Integer> numberOfLabelIndex= new ArrayList<Integer>(); 
@@ -180,34 +180,11 @@ public class TEST {
 	      JSONArray writeUsers;
 	      
 	     //jsonObjectWrite.putAll(jsonObject);
-	     
-	  /*   for(i=0; i<listOfLabelAssignment.size(); i++) {
-
-	    	 JSONObject   classAssignmentObjectDetails = new JSONObject();
-		     
-	    	 classAssignmentObjectDetails.put("ainstance id",listOfLabelAssignment.get(i).getInstance().getInstanceid() );
 	    
-	    	 writeLabels = new JSONArray(); 
-	    	 
-	/*    	for(j=0; j<listOfLabelAssignment.get(i).getLabels().size(); j++) {
-	    		
-	    		writeLabels.add(listOfLabelAssignment.get(i).getLabels().get(j).getLabelid());
-	     }
-	    	 classAssignmentObjectDetails.put("cclass label ids", writeLabels );	    	 
-		     classAssignmentObjectDetails.put("buser id", listOfLabelAssignment.get(i).getUser().getUserId() );	
-		     classAssignmentObjectDetails.put("xdatetime", listOfLabelAssignment.get(i).getDatetime() );
-	    
-	    	 classAssignmentArray.add(classAssignmentObjectDetails);
-  	
-	     }*/
-	    // System.out.println(listOfLabelAssignment.get(0).getInstance().getInstanceid());
-	     
-	   //jsonObjectWrite.put("class label assignment:" ,classAssignmentArray);
 	      
 	      //Inserting key-value pairs into the json object
 	     
-	     
-	     //Gson gsonInput=new GsonBuilder().setPrettyPrinting().create();
+	    
 	     Gson gson=new Gson();
 	     String json2="";
 	 
@@ -216,18 +193,44 @@ public class TEST {
 	      try {
 	         FileWriter file = new FileWriter("output.json");
 	         //file.write(gsonInput.toJson(jsonObject));
-	         file.write("{\"dataset id\":"+(jsonObject.get("dataset id").toString())+"\n"+"\"dataset name\":"
-	    	         +(jsonObject.get("dataset name")).toString()+"\n");
-	    	    
-	         file.write("class label assignments" +":[\n");
+	         file.write("{\n");
+	         file.write("\"dataset id\":"+(jsonObject.get("dataset id").toString())+"\n"+"\"dataset name\":"
+	    	         +(jsonObject.get("dataset name")).toString()+"\n" + "\"maximum number of labels per instance\":"
+	        		 +(jsonObject.get("maximum number of labels per instance").toString()+"\n"));
+	    	  
+	         file.write("\"class labels\":"+(jsonObject.get("class labels").toString())+" \n");
+	         
+	         
+	         file.write("\"instances\":[\n");
+	         //Print Assignment to json file
+	         for(int c=0;c<listOfInstance.size();c++) {
+
+	    	     json2=gson.toJson(listOfInstance.get(c));
+	    	     file.write(json2+",\n");
+	         }
+	         file.write("],\n");
+	       
+	         
+	         
+	         file.write("\"class label assignments\":[\n");
 	         //Print Assignment to json file
 	         for(int c=0;c<listOfLabelAssignment.size();c++) {
 
 	    	     json2=gson.toJson(listOfLabelAssignment.get(c));
 	    	     file.write(json2+",\n");
 	         }
+	         file.write("],\n");
+	         
+	         file.write("\"users" +":[\n");
+	         //Print Assignment to json file
+	         for(int c=0;c<listOfUser.size();c++) {
+
+	    	     json2=gson.toJson(listOfUser.get(c));
+	    	     file.write(json2+",\n");
+	         }
 	         file.write("]\n");
-	         file.write("}");
+	         file.write("{\n");
+	        
 	         file.flush();
 	         file.close();
 	         System.out.println("\nOutput is written sucesfully.");
@@ -240,3 +243,9 @@ public class TEST {
 	   }
 	   
 }
+	   
+	  
+
+
+
+
