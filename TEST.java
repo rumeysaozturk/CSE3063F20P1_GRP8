@@ -93,7 +93,7 @@ public class TEST {
           
 	      
 	      
-	      //**********************RANDOM ASSIGNMENT************************************************
+	      //**********************RANDOM ASSIGNMENT*************************************************
 		  ArrayList <LABEL_ASSIGNMENT> listOfLabelAssignment =new ArrayList<LABEL_ASSIGNMENT>();
 		  LABEL_ASSIGNMENT element ; 
   	      ArrayList<Integer> numberOfLabelIndex= new ArrayList<Integer>(); 
