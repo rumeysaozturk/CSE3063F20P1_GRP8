@@ -1,33 +1,31 @@
 
 public class INSTANCE {
-      private long instanceid;
-      private String text;
+      private long id;
+      private String instance;
       
 	public INSTANCE() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public INSTANCE(long instanceid,String text) {
-		this.setInstanceid(instanceid);
-		this.text=text;
+	public INSTANCE(long id,String text) {
+		this.setInstanceid(id);
+		this.instance=text;
 	}
 
-
-
 	public String getText() {
-		return text;
+		return instance;
 	}
 
 	public void setText(String text) {
-		this.text = text;
+		this.instance = text;
 	}
 
 	public long getInstanceid() {
-		return instanceid;
+		return id;
 	}
 
-	public void setInstanceid(long instanceid) {
-		this.instanceid = instanceid;
+	public void setInstanceid(long id) {
+		this.id = id;
 	}
 
 }
