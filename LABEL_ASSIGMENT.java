@@ -1,5 +1,3 @@
-
-
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,9 +5,9 @@ import java.util.Calendar;
 import java.util.ArrayList;
 
 public class LABEL_ASSIGNMENT {
-      private long instanceID;
-	  private long  userID;
-      private ArrayList<LABEL> labelID=new ArrayList<>();
+      private long instanceId;
+	  private long  userId;
+      private ArrayList<LABEL> labels=new ArrayList<>();
       private String datetime ;
       
 	public LABEL_ASSIGNMENT() {
@@ -17,10 +15,10 @@ public class LABEL_ASSIGNMENT {
 		// TODO Auto-generated constructor stub
 	
 	
-	public LABEL_ASSIGNMENT (long userID, long inst,ArrayList<LABEL> labelID) {
-		this.setUserıd(userID);
-		this.setInstanceıd(inst);
-		this.setLabelIndex(labelID);
+	public LABEL_ASSIGNMENT (long userId, long inst,ArrayList<LABEL> labels) {
+		this.setUserId(userId);
+		this.setInstanceId(inst);
+		this.setLabels(labels);
 		Date date = new Date();
 		SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 		String stringDate = dateFor.format(date);
@@ -30,12 +28,12 @@ public class LABEL_ASSIGNMENT {
       //Sort Labels
 	  public void sortLabels() {
 		   int l=0; int m=0; LABEL temp;
-		   for(l=0;l<this.getLabelIndex().size();l++) {
-	    		for(m=0; m <this.getLabelIndex().size();m++) {
-	    		 if(this.getLabelIndex().get(l).getLabelid() < this.getLabelIndex().get(m).getLabelid()) {      //swap elements if not in order
-	                 temp = this.getLabelIndex().get(l);   
-	                 this.getLabelIndex().set(l,this.getLabelIndex().get(m));
-	                 this.getLabelIndex().set(m,temp);    
+		   for(l=0;l<this.getLabels().size();l++) {
+	    		for(m=0; m <this.getLabels().size();m++) {
+	    		 if(this.getLabels().get(l).getLabelid() < this.getLabels().get(m).getLabelid()) {      //swap elements if not in order
+	                 temp = this.getLabels().get(l);   
+	                 this.getLabels().set(l,this.getLabels().get(m));
+	                 this.getLabels().set(m,temp);    
 	               } 
 	    		}    		
 	    	  }
@@ -44,19 +42,19 @@ public class LABEL_ASSIGNMENT {
 	 //Prints actions
 	  public void print() {
 		   
-		   System.out.print("instance id:" + this.instanceID + ", class labels ids:[" );
+		   System.out.print("instance id:" + this.instanceId + ", class labels ids:[" );
 		      
 
 	          int n=0;
-	          for(n=0; n<this.labelID.size(); n++) {
-	        	  if(n==this.labelID.size()-1) {
-	        		  System.out.print(this.labelID.get(n).getLabelid()+"],");
+	          for(n=0; n<this.labels.size(); n++) {
+	        	  if(n==this.labels.size()-1) {
+	        		  System.out.print(this.labels.get(n).getLabelid()+"],");
 	        	  }
 	        	  else {
-	        		  System.out.print(this.labelID.get(n).getLabelid()+",");
+	        		  System.out.print(this.labels.get(n).getLabelid()+",");
 	        	  }
 	          }
-	          System.out.print(" user :" +this.userID+", ");
+	          System.out.print(" user :" +this.userId+", ");
 	          System.out.println(" datetime :" +this.getDatetime()+" is created.");
 
 		   
@@ -71,43 +69,34 @@ public class LABEL_ASSIGNMENT {
 		this.datetime = datetime;
 	}
 
-	public long getInstanceID() {
-		return instanceID;
+	
+	public ArrayList<LABEL> getLabels() {
+		return labels;
 	}
 
 
-	public void setInstanceID(long instanceID) {
-		this.instanceID = instanceID;
+	public void setLabels(ArrayList<LABEL> labels) {
+		this.labels = labels;
 	}
 
 
-	public ArrayList<LABEL> getLabelIndex() {
-		return labelID;
+	public long getUserId() {
+		return userId;
 	}
 
 
-	public void setLabelIndex(ArrayList<LABEL> labelID) {
-		this.labelID = labelID;
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 
-	public long getUserıd() {
-		return userID;
+	public long getInstanceId() {
+		return instanceId;
 	}
 
 
-	public void setUserıd(long userID) {
-		this.userID = userID;
-	}
-
-
-	public long getInstanceıd() {
-		return instanceID;
-	}
-
-
-	public void setInstanceıd(long instanceID) {
-		this.instanceID = instanceID;;
+	public void setInstanceId(long instanceId) {
+		this.instanceId = instanceId;
 	}
 	
 }
