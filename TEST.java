@@ -179,12 +179,9 @@ public class TEST {
 	      JSONArray writeLabels;
 	      JSONArray writeUsers;
 	      
-	     //jsonObjectWrite.putAll(jsonObject);
-	    
-	      
-	      //Inserting key-value pairs into the json object
-	     
-	    
+	
+	   
+	     //Gson gsonInput=new GsonBuilder().setPrettyPrinting().create();
 	     Gson gson=new Gson();
 	     String json2="";
 	 
@@ -194,17 +191,17 @@ public class TEST {
 	         FileWriter file = new FileWriter("output.json");
 	         //file.write(gsonInput.toJson(jsonObject));
 	         file.write("{\n");
-	         file.write("\"dataset id\":"+(jsonObject.get("dataset id").toString())+"\n"+"\"dataset name\":"
-	    	         +(jsonObject.get("dataset name")).toString()+"\n" + "\"maximum number of labels per instance\":"
-	        		 +(jsonObject.get("maximum number of labels per instance").toString()+"\n"));
+	         file.write("\"dataset id\":"+(jsonObject.get("dataset id").toString())+",\n"+"\"dataset name\":"
+	    	         +(jsonObject.get("dataset name")).toString()+",\n" + "\"maximum number of labels per instance\":"
+	        		 +(jsonObject.get("maximum number of labels per instance").toString()+",\n"));
 	    	  
+	         //Print labels to json file
 	         file.write("\"class labels\":"+(jsonObject.get("class labels").toString())+" \n");
 	         
 	         
 	         file.write("\"instances\":[\n");
-	         //Print Assignment to json file
+	         //Print Instances to json file
 	         for(int c=0;c<listOfInstance.size();c++) {
-
 	    	     json2=gson.toJson(listOfInstance.get(c));
 	    	     file.write(json2+",\n");
 	         }
@@ -222,7 +219,9 @@ public class TEST {
 	         file.write("],\n");
 	         
 	         file.write("\"users" +":[\n");
-	         //Print Assignment to json file
+	         
+	         
+	         //Print Users to json file
 	         for(int c=0;c<listOfUser.size();c++) {
 
 	    	     json2=gson.toJson(listOfUser.get(c));
