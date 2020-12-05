@@ -1,6 +1,10 @@
+import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.util.Calendar;
 import java.util.ArrayList;
 
@@ -12,8 +16,10 @@ public class LABEL_ASSIGNMENT {
       
 	public LABEL_ASSIGNMENT() {
 	}
+    
+     
+
 		// TODO Auto-generated constructor stub
-	
 	
 	public LABEL_ASSIGNMENT (long userId, long inst,ArrayList<LABEL> labels) {
 		this.setUserId(userId);
@@ -40,24 +46,22 @@ public class LABEL_ASSIGNMENT {
 	   }
 	
 	 //Prints actions
-	  public void print() {
-		   
-		   System.out.print("instance id:" + this.instanceId + ", class labels ids:[" );
+	  public void print(Logger logger) {
+		   String message="";
+		   message="instance id:" + this.instanceId + ", class labels ids:[" ;
 		      
-
 	          int n=0;
 	          for(n=0; n<this.labels.size(); n++) {
 	        	  if(n==this.labels.size()-1) {
-	        		  System.out.print(this.labels.get(n).getLabelid()+"],");
+	        		  message+=this.labels.get(n).getLabelid()+"],";
 	        	  }
 	        	  else {
-	        		  System.out.print(this.labels.get(n).getLabelid()+",");
+	        		  message+=this.labels.get(n).getLabelid()+",";
 	        	  }
 	          }
-	          System.out.print(" user :" +this.userId+", ");
-	          System.out.println(" datetime :" +this.getDatetime()+" is created.");
-
-		   
+	          message+=" user:" +this.userId+",";
+	          message+=" datetime:" +this.getDatetime()+" is created.";
+	          logger.info(message);
 	   }
 	
 
