@@ -15,7 +15,7 @@ public class USER {
 	
 	//Print user
 	public void printUser() {
-		System.out.println("user id: "+this.getUserId()+ " username: "+this.getName()+" user type: "+ this.getUserId()+ " is created.");
+		System.out.println("user id: "+this.getUserId()+ " username: "+this.getName()+" user type: "+ this.getUsertype() + " is created.");
 	}
 
 	public long getUserId() {
