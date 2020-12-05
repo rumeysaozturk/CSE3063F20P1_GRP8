@@ -112,8 +112,7 @@ public class TEST {
 	  	      //Random value of max users
     	      numberOfUser= (int) (Math.random()* lengthUser)+1;
 
-	    	  //The random value shows how many labels for current instance
-	    	  numberOfLabels = (int) (Math.random()* maxLabel)+1;	    	  
+	    	  	  
 	    	  
 	    	  j=0;
 	    	  currentUser=0;
@@ -137,8 +136,10 @@ public class TEST {
 	    	    }	
 	    	    
 	    	    if(controlIn==1) {
-	    	      k=0;
+	    	           k=0;
 	   	    	  currentLabel=0;
+			   //The random value shows how many labels for current instance
+	    	          numberOfLabels = (int) (Math.random()* maxLabel)+1;	    
 	   	    	  while(k<numberOfLabels) {
 	   	    		//The random value shows which label on the instance.
 	   	    	    currentLabel=(int) (Math.random()*sizeOfLabels);  
