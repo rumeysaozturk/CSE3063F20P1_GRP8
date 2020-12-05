@@ -1,3 +1,9 @@
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.*;
+
 public class USER {
       private long userId;
       private String name;
@@ -14,9 +20,10 @@ public class USER {
 	}
 	
 	//Print user
-	public void printUser() {
-		System.out.println("user id: "+this.getUserId()+ " username: "+this.getName()+" user type: "+ this.getUsertype() + " is created.");
+	public void printUser(Logger logger) {
+		logger.info("user id: "+this.getUserId()+ " username: "+this.getName()+" user type: "+ this.getUsertype()+ " is created.");
 	}
+
 
 	public long getUserId() {
 		return userId;
