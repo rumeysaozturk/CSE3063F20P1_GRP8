@@ -107,7 +107,7 @@ public class LABEL_ASSIGNMENT {
 
 
 	public void setInstanceıd(long instanceID) {
-		this.instanceID = instanceID;
+		this.instanceID = instanceID;;
 	}
 	
 }
