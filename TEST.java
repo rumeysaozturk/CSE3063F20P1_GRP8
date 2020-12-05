@@ -15,12 +15,34 @@ import org.json.simple.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 public class TEST {
 
 	   public static void main(String args[]) throws FileNotFoundException, IOException, ParseException, SecurityException {
-	      
-
-		   //Creating a JSONParser object
+		    Logger logger = Logger.getLogger("MyLog");
+	        FileHandler fileHandler;
+		   try {
+	             
+	            // This block configure the logger with handler and formatter
+			    fileHandler = new FileHandler("tracing.log");
+	            logger.addHandler(fileHandler);
+	            //logger.setLevel(Level.ALL);
+	            SimpleFormatter formatter = new SimpleFormatter();
+	            fileHandler.setFormatter(formatter);
+	       
+	             
+	        } catch (SecurityException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	     
+		 
 		   
 		  ArrayList<LABEL>listOfLabel=new ArrayList<>();
 		  ArrayList<INSTANCE>listOfInstance=new ArrayList<>();
@@ -32,10 +54,10 @@ public class TEST {
 	         //Parsing the contents of the JSON file
 	         //Forming URL
 	      
-	         System.out.println("Input file is read succesfully.\n");
-	         System.out.println("Dataset id: "+jsonObject.get("dataset id") + " is created");
-	         System.out.println("Dataset name: "+jsonObject.get("dataset name")+ " is created");
-	         System.out.println("maximum number of labels per instance: "+jsonObject.get("maximum number of labels per instance")+ " is created\n");
+	         logger.info("Input file is read succesfully.\n");
+	         logger.info("Dataset id: "+jsonObject.get("dataset id") + " is created");
+	         logger.info("Dataset name: "+jsonObject.get("dataset name")+ " is created");
+	         logger.info("maximum number of labels per instance: "+jsonObject.get("maximum number of labels per instance")+ " is created\n");
 	         //Take the maximum labels for each instances
 	         maxLabel = Integer.parseInt(jsonObject.get("maximum number of labels per instance").toString());
 	      
@@ -87,7 +109,7 @@ public class TEST {
 		        text3=(String) a2.get("user type");
 		        user = new USER(id1,text2,text3);
 	    	    listOfUser.add(user);
-	    	    user.printUser();
+	    	    user.printUser(logger);
 	      }
 	      System.out.println();
           
@@ -163,7 +185,7 @@ public class TEST {
 	   	          listOfLabelAssignment.add(element);
 	   	          //print actions
 	   	          element.sortLabels();
-	   	          element.print();
+	   	          element.print(logger);
 	   	     	  
                   storeOfLabel= new ArrayList<LABEL>(); 
 	   	          numberOfLabelIndex.clear();
@@ -171,23 +193,11 @@ public class TEST {
 	    	  }
 	    	  numberOfUserIndex.clear();
 	      }
-	      	      
-	    
-	      //Creating a JSONObjectWrite object to write json file.
-	      JSONObject jsonObjectWrite = new JSONObject();
-	      JSONArray classAssignmentArray = new JSONArray();
 	     
-	      JSONArray writeLabels;
-	      JSONArray writeUsers;
-	      
-	
-	   
-	     //Gson gsonInput=new GsonBuilder().setPrettyPrinting().create();
 	     Gson gson=new Gson();
 	     String json2="";
 	 
-	    // jsonObjectWrite.put("class label assignment:" ,json);
-	     //System.out.print(json);
+	    
 	      try {
 	         FileWriter file = new FileWriter("output.json");
 	         //file.write(gsonInput.toJson(jsonObject));
@@ -207,8 +217,6 @@ public class TEST {
 	    	     file.write(json2+",\n");
 	         }
 	         file.write("],\n");
-	       
-	         
 	         
 	         file.write("\"class label assignments\":[\n");
 	         //Print Assignment to json file
@@ -233,7 +241,7 @@ public class TEST {
 	        
 	         file.flush();
 	         file.close();
-	         System.out.println("\nOutput is written sucesfully.");
+	         logger.info("Output is written sucesfully.");
 	      } catch (IOException e) {
 	         // TODO Auto-generated catch block
 	         e.printStackTrace();
@@ -243,9 +251,3 @@ public class TEST {
 	   }
 	   
 }
-	   
-	  
-
-
-
-
