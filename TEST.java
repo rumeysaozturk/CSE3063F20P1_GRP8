@@ -1,3 +1,4 @@
+
 import java.util.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -47,29 +48,33 @@ public class TEST {
 		  ArrayList<LABEL>listOfLabel=new ArrayList<>();
 		  ArrayList<INSTANCE>listOfInstance=new ArrayList<>();
 	      JSONParser jsonParser = new JSONParser();
-	      int maxLabel=0;
-	      JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader("CES3063F20_LabelingProject_Input-1.json"));
+	      long maxLabel=0;
+	      
 	      JSONObject jsonUser = (JSONObject) jsonParser.parse(new FileReader("configuration.json"));
-
+	      JSONArray jsonArraydataset = (JSONArray)(jsonUser.get("datasets"));
+	      ArrayList<DATASET>dataset1=new ArrayList<>();
+	      createDatasets(jsonArraydataset,dataset1);
+	    
 	         //Parsing the contents of the JSON file
 	         //Forming URL
-	      
+	      /*burası filedan okuncak*/
+	    DATASET current=dataset1.get(0);
 	         logger.info("Input file is read succesfully.\n");
-	         logger.info("Dataset id: "+jsonObject.get("dataset id") + " is created");
-	         logger.info("Dataset name: "+jsonObject.get("dataset name")+ " is created");
-	         logger.info("maximum number of labels per instance: "+jsonObject.get("maximum number of labels per instance")+ " is created\n");
+	         logger.info("Dataset id: "+ current.getId()+ " is created");
+	         logger.info("Dataset name: "+current.getName()+ " is created");
+	         logger.info("maximum number of labels per instance: "+current.getMax_label()+ " is created\n");
 	         //Take the maximum labels for each instances
-	         maxLabel = Integer.parseInt(jsonObject.get("maximum number of labels per instance").toString());
+	         maxLabel =current.getMax_label();
 	      
 	         
 	         //Retrieving the array
-	         JSONArray jsonArray = (JSONArray)(jsonObject.get("class labels"));
+	         JSONArray jsonArray = current.getLabels();
 	         
 	        
 	         //Iterating the contents of the array
 	      
 	        
-	         JSONArray jsonArray1 = (JSONArray)(jsonObject.get("instances"));
+	         JSONArray jsonArray1 =current.getInstances();
 	       
 	        
 	         //Iterating the contents of the array
@@ -202,20 +207,22 @@ public class TEST {
 	         FileWriter file = new FileWriter("output.json");
 	         //file.write(gsonInput.toJson(jsonObject));
 	         file.write("{\n");
-	         file.write("\"dataset id\":"+(jsonObject.get("dataset id").toString())+",\n"+"\"dataset name\":"
-	    	         +(jsonObject.get("dataset name")).toString()+",\n" + "\"maximum number of labels per instance\":"
-	        		 +(jsonObject.get("maximum number of labels per instance").toString()+",\n"));
+	         file.write("\"dataset id\":"+current.getId()+",\n"+"\"dataset name\":"
+	    	         +current.getName()+",\n" + "\"maximum number of labels per instance\":"
+	        		 +current.getMax_label()+",\n");
 	    	  
 	         //Print labels to json file
-	         file.write("\"class labels\":"+(jsonObject.get("class labels").toString())+" \n");
+	         file.write("\"class labels\":"+(current.getLabels().toString())+" \n");
 	         
 	         
 	         file.write("\"instances\":[\n");
 	         //Print Instances to json file
-	         for(int c=0;c<listOfInstance.size();c++) {
+	        /* for(int c=0;c<listOfInstance.size();c++) {
 	    	     json2=gson.toJson(listOfInstance.get(c));
 	    	     file.write(json2+",\n");
-	         }
+	         }*/
+	         
+	       file.write(gson.toJson(listOfInstance));
 	         file.write("],\n");
 	         
 	         file.write("\"class label assignments\":[\n");
@@ -250,4 +257,17 @@ public class TEST {
 	     // System.out.println("JSON file created: "+json2);
 	   }
 	   
-}
+
+	   
+public static void createDatasets(JSONArray jsonArraydataset,ArrayList<DATASET>datasets) throws FileNotFoundException, IOException, ParseException{
+	JSONParser jsonParser = new JSONParser();
+	 for (int i=0;i<jsonArraydataset.size();i++) {
+   	  JSONObject a=(JSONObject) jsonArraydataset.get(i);
+   
+	JSONObject dataset= (JSONObject)jsonParser.parse(new FileReader(a.get("filepath").toString()));
+    JSONArray jsonArray = (JSONArray)(dataset.get("class labels"));
+    JSONArray jsonArray1 = (JSONArray)(dataset.get("instances"));
+    DATASET a1=new DATASET((long)dataset.get("dataset id"),(long)dataset.get("maximum number of labels per instance"),(String)dataset.get("dataset name"),jsonArray,jsonArray1);
+    datasets.add(a1);
+	}
+}}
