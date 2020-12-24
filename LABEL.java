@@ -1,4 +1,3 @@
-
 public class LABEL {
       private long labelid;
       private String text;
@@ -23,3 +22,4 @@ public void setLabelid(long labelid) {
 	this.labelid = labelid;
 }
 }
+
