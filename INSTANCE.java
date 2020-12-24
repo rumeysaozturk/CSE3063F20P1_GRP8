@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 
@@ -51,6 +50,11 @@ public class INSTANCE {
   			
   		}
   	}
+  	
+  	
+  
+  	
+  	
   	// assign 0 to percentageOfLabel list in the beginning
   	public void createListForLabelPercentage( Integer numberOfLabel)
   	{
@@ -75,7 +79,7 @@ public class INSTANCE {
   		return allLabels.get(index);
   		
   	}
-  //finding Max Frequent Label percentage
+    //finding Max Frequent Label percentage
   	public Integer percentageOfMaxLabel() {
   		Integer numberOfLabelled=Collections.max(this.countOfLabel);
   		Integer percentage = (numberOfLabelled*100) / this.totalNumberOfLabelAssignment;
@@ -110,6 +114,7 @@ public class INSTANCE {
   		for(int i=0; i<numberOfLabel ;i++) {
      		countOfLabel.add(0);}
   	}
+  	
   	// increase count of label
 	public void setLabelCount( Integer id) {
 		this.countOfLabel.set(id-1, this.countOfLabel.get(id-1)+1);
@@ -135,7 +140,7 @@ public class INSTANCE {
 	}
 
 	public void setTotalNumberOfLabelAssignment(Integer totalNumberOfLabelAssignment) {
-		totalNumberOfLabelAssignment = totalNumberOfLabelAssignment;
+		this.totalNumberOfLabelAssignment = totalNumberOfLabelAssignment;
 	}
     
 	public ArrayList<LABEL> getLabelInInstance() {
@@ -196,3 +201,4 @@ public class INSTANCE {
 	}
 */
 }
+
