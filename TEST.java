@@ -49,7 +49,9 @@ public class TEST {
 	   
 	      JSONArray jsonArraydataset = (JSONArray)(jsonUser.get("datasets"));
 	      ArrayList<DATASET>dataset1=new ArrayList<>();
-	      createDatasets(jsonArraydataset,dataset1);
+	      Singleton temp=Singleton.getInstance();
+	      temp.createDatasets(jsonArraydataset, dataset1);
+	    
 	    
 	      //Parsing the contents of the JSON file
 	      //Forming URL
@@ -113,7 +115,7 @@ public class TEST {
 	      File file=new File("usermetrics.json"); 
 
 		    for (int t=0;t<dataset1.size();t++) {
-		    	File file1=new File("Secret/"+dataset1.get(t).getId()+".json");
+		    	File file1=new File("Secret"+dataset1.get(t).getId()+".json");
 		    }
 		  
 		     if(file.length()==0) { 
@@ -157,7 +159,7 @@ public class TEST {
 	         }
 		     
 		     
-		     File file2=new File("Secret/"+current.getId()+".json"); 
+		     File file2=new File("Secret"+current.getId()+".json"); 
 		     if(file2.length()==0) { 
 		       FileWriter file1 = new FileWriter(file2);
 		
@@ -170,7 +172,7 @@ public class TEST {
 		         	 JSONObject jsonArrayUser1_1=(JSONObject) jsonArrayUser1.get(i);
 		      
 		         	 long id=(long)jsonArrayUser1_1.get("user id");
-		         // System.out.print(id+" ");
+		      
 		         	    JSONArray jsonArrayUserlabeled = (JSONArray)jsonArrayUser1_1.get("labeled");
 		         	    for(int c=0;c<jsonArrayUserlabeled.size();c++) {
 		         	   	 JSONObject a211=(JSONObject) jsonArrayUserlabeled.get(c);
@@ -214,13 +216,13 @@ public class TEST {
 	      USER bos=new USER();
 	      
 		     //**********Find the dataset whether it exists previous iteration*******************   
-	         File fileControl = new File("Secret/"+current.getId()+"instancemetrics.json");
+	         File fileControl = new File("Secret"+current.getId()+"instancemetrics.json");
 	  
 	         if (fileControl.exists()) {
 	        	//Read previous file 
 	          
 		      JSONParser jsonParserRead= new JSONParser();
-		      JSONObject jsonRead = (JSONObject) jsonParserRead.parse(new FileReader("Secret/"+current.getId()+"instancemetrics.json"));
+		      JSONObject jsonRead = (JSONObject) jsonParserRead.parse(new FileReader("Secret"+current.getId()+"instancemetrics.json"));
 		      
 		      //COUNT OF LABEL READ 
 		      JSONArray array = (JSONArray)(jsonRead.get("CountOfLabel"));
@@ -325,7 +327,7 @@ public class TEST {
 	        		 LABEL_ASSIGNMENT one=new LABEL_ASSIGNMENT(currentusers.get(l).getUserId(),listOfInstance.get(random).getInstanceid(),listOfLabel.get(random1));
 	        		 
 	        		 //This functions are related to INSTANCE METRICS
-	        		 listOfInstance.get(random).addLabel(listOfLabel.get(random1));//adding label to labelInInstance
+	        		
 	        		 Integer intObj = new Integer((int)(long)listOfLabel.get(random1).getLabelid());// casting label id to Integer
 	        		 listOfInstance.get(random).setLabelCount(intObj); //counting label in the listOfInstance
 	        		 listOfInstance.get(random).calculateTotalNumberOfLabelAssignment(logger); //INSTANCE METRICS STEP 1: calculating Total Number Of Label Assignment
@@ -402,7 +404,7 @@ public class TEST {
 		 	 	  currentu.setLabeled2(two);
 		 	 	  }
 		 				
-		 		  currentu.getLabeled().get(random).addLabel(two.getLabels());
+		 		 
 		 		  Integer intObj = new Integer((int)(long)two.getLabels().getLabelid());
 		 		  currentu.getLabeled().get(random).setLabelCount(intObj);
 		 		  //This functions are related to USER METRICS
@@ -452,7 +454,7 @@ public class TEST {
 			     }
 				else {
 					LABEL_ASSIGNMENT two=new LABEL_ASSIGNMENT(currentu.getUserId(),cInstance.getInstanceid(),currentlabel);
-					cInstance.addLabel(two.getLabels());
+				
 					Integer intObj = new Integer((int)(long)two.getLabels().getLabelid());
 					cInstance.setLabelCount(intObj);
 					//This functions are related to USER METRICS
@@ -502,37 +504,11 @@ public class TEST {
 		    //Finish the timer
 		    endTime = System.nanoTime();
 		    currentu.setTime(endTime - startTime);
-		    //i++;
+		  
 		     
 		     }
-	 
-	  		
-	    
+	
 	   }//main
-	   
-
-	   
-	   public static void createDatasets(JSONArray jsonArraydataset,ArrayList<DATASET>datasets) throws FileNotFoundException, IOException, ParseException{
-		   JSONParser jsonParser = new JSONParser();
-		   for (int i=0;i<jsonArraydataset.size();i++) {
-			   JSONObject a=(JSONObject) jsonArraydataset.get(i);
-   
-			   JSONObject dataset= (JSONObject)jsonParser.parse(new FileReader(a.get("filepath").toString()));
-			   JSONArray jsonArray = (JSONArray)(dataset.get("class labels"));
-			   JSONArray jsonArray1 = (JSONArray)(dataset.get("instances"));
-
-			   DATASET a1=new DATASET((long)dataset.get("dataset id"),(long)dataset.get("maximum number of labels per instance"),(String)dataset.get("dataset name"),jsonArray,jsonArray1,(Long)a.get("numberofuser"));
-			   datasets.add(a1);
-		   }
-	   }//createDatasets
-	   
-	   
-	   
-
-
-
-
-
-
+	 
 }//class
 	   
