@@ -51,14 +51,8 @@ public class INSTANCE implements finder {
   			
   	}
   	
-  	// writing percentage of all labels
-  	public void writingPercOfLabels() {
-  		for(int i=0; i<this.countOfLabel.size(); i++ ) {
-  			System.out.println(" LabelId: "+ (i+1) + " percLabel: " +this.percentageOfLabel.get(i));
-  			
-  		}
-  	}
-
+  	
+  	
   
   	
   	
@@ -235,10 +229,5 @@ public class INSTANCE implements finder {
 	}
     
 	
-	/*public void createLabelListFor( Integer numberOfLabel ){
-		for(int i=0; i< numberOfLabel;i++)
-		countOfLabel.add(0);
-		
-	}
-*/
+
 }
