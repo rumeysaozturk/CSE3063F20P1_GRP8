@@ -1,7 +1,7 @@
 import java.util.*;
 
 
-public class INSTANCE {
+public class INSTANCE implements finder {
       private long id;
       private String instance;
       private ArrayList<LABEL> labelInInstance = new ArrayList<>();// store of all labels for each instance
@@ -131,7 +131,7 @@ public class INSTANCE {
 	   this.labelInInstance.add(label);
    }
    //find instances according to their ids
-	public int find(ArrayList<INSTANCE>listofinstance,long instanceid) {
+	public int find(ArrayList<LABEL>list,ArrayList<INSTANCE>listofinstance,Long instanceid) {
 		for(int c=0;c<listofinstance.size();c++) {
 			if(instanceid==listofinstance.get(c).id) {
 				return c;
@@ -219,7 +219,7 @@ public class INSTANCE {
 	/*public void createLabelListFor( Integer numberOfLabel ){
 		for(int i=0; i< numberOfLabel;i++)
 		countOfLabel.add(0);
-	
+		
 	}
 */
 }
