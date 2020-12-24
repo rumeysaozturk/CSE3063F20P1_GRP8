@@ -8,16 +8,17 @@ public class DATASET {
   private String name;
   private  JSONArray labels;
   private JSONArray ınstances;
-  
+  private Long numofuser;
 	public DATASET() {
 		// TODO Auto-generated constructor stub
 	}
-public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Instance) {
+public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Instance,Long numberofuser) {
 	setId(id);
 	setMax_label(max_label);
 	setName(name);
 	setLabels(label);
 	setInstances(Instance);
+	setNumofuser(numberofuser);
 }
 	
 	public String getName() {
@@ -51,8 +52,15 @@ public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Ins
 	public void setId(Long id) {
 		this.id = id;
 	}
+	public Long getNumofuser() {
+		return numofuser;
+	}
+	public void setNumofuser(Long numofuser) {
+		this.numofuser = numofuser;
+	}
 
 
 	
 	
 }
+
