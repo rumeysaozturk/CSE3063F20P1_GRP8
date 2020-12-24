@@ -90,7 +90,7 @@ public class INSTANCE implements finder {
   		if(this.totalNumberOfLabelAssignment!=0) {
   		   Integer numberOfLabelled=Collections.max(this.countOfLabel);
   		   Integer percentage = (numberOfLabelled*100) / this.totalNumberOfLabelAssignment;
-  		   logger.info("instance id: "+this.getInstanceid()+ "  most frequent class label percentage is calculated " );
+  		   logger.info("instance id: "+this.getInstanceid()+ "  most frequent class label percentage is calculated " + allLabels.get(index).getLabelid() );
   		   return percentage;	
   		}
   		else {
