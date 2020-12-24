@@ -88,7 +88,9 @@ public class PRINT {
 	         file.write("\n{\"users\":[");
 	         for(int k=0;k<currentUser.size();k++) {
 	        	 String strDouble = String.format("%.2f", currentUser.get(k).getConsistency());
-	        	 file.write("{\"user id\":"+currentUser.get(k).getUserId()+",\"completeness percantage\":"+((double)currentUser.get(k).getLabeled().size()/instance.size())*100+
+	        	 
+	        	 file.write("{\"user id\":"+currentUser.get(k).getUserId()+",\"completeness percantage\": %"+ 
+	        	 String.format("%.2f",((double)currentUser.get(k).getLabeled().size()/instance.size())*100)+
 	        			 ",\"consistency\":"+strDouble+"}\n");
 	         }
 	         logger.info("dataset id: " +datasetId + " Users assigned and their completeness percentage is calculated " );
@@ -98,7 +100,7 @@ public class PRINT {
 	         file.write("\n}");
              file.flush();
 	         file.close();
-	         //logger.info("Instance metrics is written sucesfully.");
+	       
 	      } catch (IOException e) {
 	         e.printStackTrace();
 	      }
