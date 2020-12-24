@@ -15,7 +15,7 @@ public class PRINT {
 	public PRINT(){		
 	}
 	
-	public void printDatasetMetrics(ArrayList <INSTANCE> instance,ArrayList <LABEL> listOfLabel,Long datasetId,Long numOfUser,Logger logger,ArrayList<USER>cu) {
+	public void printDatasetMetrics(ArrayList <INSTANCE> instance,ArrayList <LABEL> listOfLabel,Long datasetId,Long numOfUser,Logger logger,ArrayList<USER> currentUser,DATASET dataset) {
 		int i=0; int j=0; int isLabeled=0; double percentage=0.0; int temp=0; String convert="";
 	    int labelArray[]= new int[listOfLabel.size()];
 	      try {
@@ -30,6 +30,7 @@ public class PRINT {
 	        	 }
 	         }
 	         file.write(""+((double)(isLabeled)/(double)instance.size())*100 +"}");
+	         dataset.setCompleteness(((double)(isLabeled)/(double)instance.size())*100);
 	         
 	         //STEP 2
 	         for(i=0; i<instance.size(); i++) {
@@ -70,9 +71,10 @@ public class PRINT {
 	         
 	         //STEP 5
 	         file.write("\n{\"users\":[");
-	         for(int k=0;k<cu.size();k++) {
-	        	 file.write("{\"user id\":"+cu.get(k).getUserId()+",\"completeness percantage\":"+((double)cu.get(k).getLabeled().size()/instance.size())*100+
-	        			 ",\"consistency\":"+cu.get(k).getConsistency()+"}\n");
+	         for(int k=0;k<currentUser.size();k++) {
+	        	 String strDouble = String.format("%.2f", currentUser.get(k).getConsistency());
+	        	 file.write("{\"user id\":"+currentUser.get(k).getUserId()+",\"completeness percantage\":"+((double)currentUser.get(k).getLabeled().size()/instance.size())*100+
+	        			 ",\"consistency\":"+strDouble+"}\n");
 	         }
 	         file.write("]}\n");
 	         
@@ -175,4 +177,60 @@ public class PRINT {
 	     }
 	     System.out.println("JSON file created: "+jsonObject);
 	}
+	
+	public void printusermet(FileWriter file1,ArrayList<USER>listofuser) throws IOException {
+		
+		
+	    
+		  file1.write("{");
+	      file1.write("\"users\":[");
+		  for(int c=0;c<listofuser.size();c++) {
+			 file1.write("{\"userId\":"+listofuser.get(c).getUserId()+","+"\"totalNumberofInstance\":"+listofuser.get(c).getTotalNumberofınstance()+", \"Number of unique instance\":"+
+		     listofuser.get(c).getNumofuniqueins()+",\"consistency\":"+ listofuser.get(c).getCheckconsistency()+","+
+		     "\"consistency probality\":"+ listofuser.get(c).getConsistency()+",");
+		  
+			 file1.write("\"number of dataset\":"+listofuser.get(c).getDataset().size()+",");
+			  file1.write("\"datasets\":[");
+			 	 for(int x=0;x<listofuser.get(c).getDataset().size();x++) {
+			 	      file1.write("{\"dataset id\":"+listofuser.get(c).getDataset().get(x).getId()+","+"\"completeness\":"+listofuser.get(c).getDataset().get(x).getCompleteness()+"}");
+			 	   	 }
+			 
+			 	   	file1.write("],");
+			 	   file1.write("\"average time\":"+(listofuser.get(c).average()+listofuser.get(c).getAverage())+",\"standart deviation\":"+listofuser.get(c).stdeviation()+"}\n");
+		  
+		  }
+	    
+	    //Print Users to json file
+	 
+	   // file1.write("]\n");
+	    file1.write("]\n}\n");
+	   
+	    file1.flush();
+	    file1.close();
+	}
+
+public   void printuserarray(FileWriter file2,ArrayList<USER>listofuser) throws IOException {
+	 file2.write("{");
+    file2.write("\"users\":[");
+ 
+    for (int c=0;c<listofuser.size();c++) {
+   	file2.write("{\"user id\":"+listofuser.get(c).getUserId()+",");
+   	file2.write("\"labeled\":[");
+   	 for(int i=0;i<listofuser.get(c).getLabeled().size();i++) {
+   	           file2.write("{ \"instance id \" :"+listofuser.get(c).getLabeled().get(i).getInstanceid()+"},");
+   	 }
+   	 file2.write("],");
+   	 file2.write("\"labeled2\":[");
+   	 for(int x=0;x<listofuser.get(c).getLabeled2().size();x++) {
+      file2.write("{\"instance id\":"+listofuser.get(c).getLabeled2().get(x).getInstanceId()+",\"label id\":"+listofuser.get(c).getLabeled2().get(x).getLabels().getLabelid()+"},");
+   	 }
+   	file2.write("]}\n");
+  
+    }
+    file2.write("] \n}");
+    
+    file2.flush();
+    file2.close();
+}
+	
 }
