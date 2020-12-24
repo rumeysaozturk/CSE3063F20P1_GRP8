@@ -15,6 +15,78 @@ public class PRINT {
 	public PRINT(){		
 	}
 	
+	public void printDatasetMetrics(ArrayList <INSTANCE> instance,ArrayList <LABEL> listOfLabel,Long datasetId,Long numOfUser,Logger logger,ArrayList<USER>cu) {
+		int i=0; int j=0; int isLabeled=0; double percentage=0.0; int temp=0; String convert="";
+	    int labelArray[]= new int[listOfLabel.size()];
+	      try {
+	         FileWriter file = new FileWriter("dataset"+datasetId+"Metrics"+".json");
+	         file.write("{\n");
+	         file.write("\"dataset id \":"+datasetId+"\n");
+	         //STEP 1
+	         file.write("{\"Completeness percentage\": %");
+	         for(i=0; i<instance.size(); i++) {
+	        	 if(instance.get(i).getTotalNumberOfLabelAssignment()!=0) {
+	        		 isLabeled++;
+	        	 }
+	         }
+	         file.write(""+((double)(isLabeled)/(double)instance.size())*100 +"}");
+	         
+	         //STEP 2
+	         for(i=0; i<instance.size(); i++) {
+	        	 convert=String.valueOf(instance.get(i).findMaxFrequentLabel(listOfLabel).getLabelid());
+	        	 temp=Integer.valueOf(convert);
+	        	 labelArray[temp-1]=labelArray[temp-1]+1;
+	         }
+	         file.write("\n{\"Class distribution based on final instance labels\": {");
+	         for(i=0; i<listOfLabel.size(); i++) {
+	        	 
+	        	 if(i==0) {
+	        		String strDouble = String.format("%.2f", (((double)(labelArray[i]-(instance.size()-isLabeled))/(double)isLabeled))*100);
+	        		file.write("[%"+strDouble+","+listOfLabel.get(i).getText()+"]");
+	        	 }
+	        	 else {
+	        		 String strDouble = String.format("%.2f", ((double)labelArray[i]/(double)isLabeled)*100);
+	        		 file.write("[%"+strDouble+","+listOfLabel.get(i).getText()+"]");
+	        	 }
+	        	 
+	        	 if(i!=listOfLabel.size()-1) {
+	        		 file.write(",");
+	        	 }
+	         }
+	         file.write("}}");
+	         
+	         //STEP 3
+	         file.write("\n{\"List number of unique instances for each class label \": {");
+	         for(i=0; i<listOfLabel.size(); i++) {
+	        	 file.write("["+listOfLabel.get(i).getText()+","+listOfLabel.get(i).getUniqueInstance().size()+"]");
+	        	 if(i!=listOfLabel.size()-1) {
+	        	 file.write(",");
+	        	 }
+	         }
+	         file.write("}}");
+	         
+	         //STEP 4
+	         file.write("\n{\"Number of users\": "+numOfUser + "}");
+	         
+	         //STEP 5
+	         file.write("\n{\"users\":[");
+	         for(int k=0;k<cu.size();k++) {
+	        	 file.write("{\"user id\":"+cu.get(k).getUserId()+",\"completeness percantage\":"+((double)cu.get(k).getLabeled().size()/instance.size())*100+
+	        			 ",\"consistency\":"+cu.get(k).getConsistency()+"}\n");
+	         }
+	         file.write("]}\n");
+	         
+	         file.write("\n}");
+             file.flush();
+	         file.close();
+	         //logger.info("Instance metrics is written sucesfully.");
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      }
+		
+	}
+	
+	
 	//**********************PRINT INSTANCE METRICS
     public void printInstanceMetrics(ArrayList <INSTANCE> instance,ArrayList <LABEL> listOfLabel,Long datasetId,Logger logger) {
 	     
@@ -51,7 +123,7 @@ public class PRINT {
     }
 
 	//*****************BACK UP THE PREVIOUS DATASET INFORMATIONS 
-	public void backup(ArrayList<INSTANCE> instance,Long datasetId) {
+	public void backup(ArrayList<INSTANCE> instance,ArrayList<LABEL> listOfLabel,Long datasetId) {
 		JSONObject jsonObject = new JSONObject();
 	    jsonObject.put("dataset id", 1);
 		int i=0; int j=0; int index=0;
@@ -82,9 +154,16 @@ public class PRINT {
 			totalArray.add(instance.get(i).getTotalNumberOfLabelAssignment());
 		}
 		
+		//UNIQUE INSTANCE FOR EACH LABEL
+		JSONArray labelArray = new JSONArray();
+		for(i=0; i<listOfLabel.size(); i++) {
+			labelArray.add(listOfLabel.get(i).getUniqueInstance());
+		}
+		
 		jsonObject.put("CountOfLabel", countArray);
 		jsonObject.put("UniqueArray", uniqueArray);
 		jsonObject.put("TotalNumberOfAssignment", totalArray);
+		jsonObject.put("LabelArray", labelArray);
 		
 		try {
 	        FileWriter file = new FileWriter("Secret/"+datasetId+"instancemetrics.json");
@@ -97,7 +176,3 @@ public class PRINT {
 	     System.out.println("JSON file created: "+jsonObject);
 	}
 }
-
-
-
-
