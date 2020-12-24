@@ -1,4 +1,6 @@
 import java.io.FileWriter;
+
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -6,10 +8,15 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.google.gson.Gson;
+
+
+
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 public class PRINT {
 
 	public PRINT(){		
@@ -18,6 +25,8 @@ public class PRINT {
 	public void printDatasetMetrics(ArrayList <INSTANCE> instance,ArrayList <LABEL> listOfLabel,Long datasetId,Long numOfUser,Logger logger,ArrayList<USER> currentUser,DATASET dataset) {
 		int i=0; int j=0; int isLabeled=0; double percentage=0.0; int temp=0; String convert="";
 	    int labelArray[]= new int[listOfLabel.size()];
+	    
+	   
 	      try {
 	         FileWriter file = new FileWriter("dataset"+datasetId+"Metrics"+".json");
 	         file.write("{\n");
@@ -31,10 +40,11 @@ public class PRINT {
 	         }
 	         file.write(""+((double)(isLabeled)/(double)instance.size())*100 +"}");
 	         dataset.setCompleteness(((double)(isLabeled)/(double)instance.size())*100);
+	         logger.info("dataset id: " +datasetId + " Completeness percentage is calculated : " + ((double)(isLabeled)/(double)instance.size())*100 );
 	         
 	         //STEP 2
 	         for(i=0; i<instance.size(); i++) {
-	        	 convert=String.valueOf(instance.get(i).findMaxFrequentLabel(listOfLabel).getLabelid());
+	        	 convert=String.valueOf(instance.get(i).findMaxFrequentLabel(listOfLabel,logger).getLabelid());
 	        	 temp=Integer.valueOf(convert);
 	        	 labelArray[temp-1]=labelArray[temp-1]+1;
 	         }
@@ -53,6 +63,8 @@ public class PRINT {
 	        	 if(i!=listOfLabel.size()-1) {
 	        		 file.write(",");
 	        	 }
+	        	 
+	        	 logger.info("dataset id: " +datasetId + " Class distribution is calculated" );
 	         }
 	         file.write("}}");
 	         
@@ -63,11 +75,14 @@ public class PRINT {
 	        	 if(i!=listOfLabel.size()-1) {
 	        	 file.write(",");
 	        	 }
+	        	 
 	         }
+	         logger.info("dataset id: " +datasetId + " Unique instance for each label is calculated" );
 	         file.write("}}");
 	         
 	         //STEP 4
 	         file.write("\n{\"Number of users\": "+numOfUser + "}");
+	         logger.info("dataset id: " +datasetId + " Number of user is calculated : "+ numOfUser );
 	         
 	         //STEP 5
 	         file.write("\n{\"users\":[");
@@ -76,6 +91,8 @@ public class PRINT {
 	        	 file.write("{\"user id\":"+currentUser.get(k).getUserId()+",\"completeness percantage\":"+((double)currentUser.get(k).getLabeled().size()/instance.size())*100+
 	        			 ",\"consistency\":"+strDouble+"}\n");
 	         }
+	         logger.info("dataset id: " +datasetId + " Users assigned and their completeness percentage is calculated " );
+	         logger.info("dataset id: " +datasetId + " Users assigned and their completeness consistency is calculated " );
 	         file.write("]}\n");
 	         
 	         file.write("\n}");
@@ -101,8 +118,8 @@ public class PRINT {
 	         file.write("\"instances\":[");
 	         for(i=0; i<instance.size(); i++){
 	        	 file.write("\n{Instance id :"+ instance.get(i).getInstanceid()+" Total Number Of Label Assignment :" + instance.get(i).getTotalNumberOfLabelAssignment()
-	        			 +", \"Number of unique label assignments\":" + instance.get(i).calculateTotalNumberOfUniqueLabel()+", \"Number of unique users\":"+instance.get(i).getUniqueUsers().size()
-	        			 +", \"Most frequent class label and percentage\":[\""+instance.get(i).findMaxFrequentLabel(listOfLabel).getText()+"\",\"%"+instance.get(i).percentageOfMaxLabel()+"]"
+	        			 +", \"Number of unique label assignments\":" + instance.get(i).calculateTotalNumberOfUniqueLabel(logger)+", \"Number of unique users\":"+instance.get(i).getUniqueUsers().size()
+	        			 +", \"Most frequent class label and percentage\":[\""+instance.get(i).findMaxFrequentLabel(listOfLabel,logger).getText()+"\",\"%"+instance.get(i).percentageOfMaxLabel(logger)+"]"
 	        			 +", \"List class labels and percentages\":[");
 	        	 for(j=0; j<listOfLabel.size(); j++) {
 	        	 file.write("[\""+listOfLabel.get(j).getText()+"\",\"%"+instance.get(i).getPercentageOfLabel().get(j)+"]");
@@ -110,7 +127,7 @@ public class PRINT {
 	        	 file.write(",");
 	        	 }
 	        	 }
-	        	 file.write("], \"Entropy\":"+instance.get(i).entropy()+"}");
+	        	 file.write("], \"Entropy\":"+instance.get(i).entropy(logger)+"}");
 	        	 if(i!=instance.size()-1) {
 	        		 file.write(",");
 	        	 }
@@ -178,26 +195,35 @@ public class PRINT {
 	     System.out.println("JSON file created: "+jsonObject);
 	}
 	
-	public void printusermet(FileWriter file1,ArrayList<USER>listofuser) throws IOException {
+	public void printusermetrics(FileWriter file1,ArrayList<USER>listofuser,Logger logger) throws IOException {
 		
 		
-	    
 		  file1.write("{");
 	      file1.write("\"users\":[");
 		  for(int c=0;c<listofuser.size();c++) {
 			 file1.write("{\"userId\":"+listofuser.get(c).getUserId()+","+"\"totalNumberofInstance\":"+listofuser.get(c).getTotalNumberofınstance()+", \"Number of unique instance\":"+
 		     listofuser.get(c).getNumofuniqueins()+",\"consistency\":"+ listofuser.get(c).getCheckconsistency()+","+
 		     "\"consistency probality\":"+ listofuser.get(c).getConsistency()+",");
-		  
+			 
+			 
 			 file1.write("\"number of dataset\":"+listofuser.get(c).getDataset().size()+",");
+			 logger.info("user id: "+listofuser.get(c).getUserId()+" Number of dataset is calculated : "+listofuser.get(c).getDataset().size());
 			  file1.write("\"datasets\":[");
 			 	 for(int x=0;x<listofuser.get(c).getDataset().size();x++) {
 			 	      file1.write("{\"dataset id\":"+listofuser.get(c).getDataset().get(x).getId()+","+"\"completeness\":"+listofuser.get(c).getDataset().get(x).getCompleteness()+"}");
-			 	   	 }
+			 	      logger.info("user id: "+listofuser.get(c).getUserId()+" Dataset id:"+listofuser.get(c).getDataset().get(x).getId()+"dataset completeness is calculated : "+listofuser.get(c).getDataset().get(x).getCompleteness());
+			 	 }
 			 
 			 	   	file1.write("],");
 			 	   file1.write("\"average time\":"+(listofuser.get(c).average()+listofuser.get(c).getAverage())+",\"standart deviation\":"+listofuser.get(c).stdeviation()+"}\n");
-		  
+			  
+			logger.info("user id: "+listofuser.get(c).getUserId()+" Number of dataset is calculated : "+listofuser.get(c).getDataset().size());
+			logger.info("user id: "+listofuser.get(c).getUserId()+" Total number of Instance is calculated: "+listofuser.get(c).getTotalNumberofınstance());
+			logger.info("user id: "+listofuser.get(c).getUserId()+" Number of unique instance is calculated: "+ listofuser.get(c).getNumofuniqueins());
+			
+			logger.info("user id: "+listofuser.get(c).getUserId()+" Consistency percentage is calculated: "+listofuser.get(c).getCheckconsistency());
+			logger.info("user id: "+listofuser.get(c).getUserId()+" Average time is calculated : "+(listofuser.get(c).average()+listofuser.get(c).getAverage()));
+			logger.info("user id: "+listofuser.get(c).getUserId()+" Standart deviation is calculated : "+listofuser.get(c).stdeviation());
 		  }
 	    
 	    //Print Users to json file
