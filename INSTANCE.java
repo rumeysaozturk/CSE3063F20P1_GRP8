@@ -22,25 +22,26 @@ public class INSTANCE {
   		this.instance=text;
   		
   	}
-  	//calculating entropy //////////////////// ???????????????????????????????* unique label mi 2 mi 
+  	//calculating entropy
   	public double entropy() {
   		double result=0.0;
   		double divide;
   		double countOfLabel;
   		double totalNumberOfLabelAssignment;
-  		//double uniqueLabel= calculateTotalNumberOfUniqueLabel();
-  		for(int i=0; i<this.countOfLabel.size(); i++) {
+  		double uniqueLabel= calculateTotalNumberOfUniqueLabel();
+  		if(uniqueLabel!=0&&uniqueLabel!=1&& this.totalNumberOfLabelAssignment!=0) {
+  		  for(int i=0; i<this.countOfLabel.size(); i++) {
+  			
   			if(this.countOfLabel.get(i)!=0) {
   			countOfLabel=this.countOfLabel.get(i);
   		  	totalNumberOfLabelAssignment=this.totalNumberOfLabelAssignment;
   			divide=countOfLabel/totalNumberOfLabelAssignment;
-  			//System.out.println("cgi:" + this.countOfLabel.get(i) + " ttnla"+ this.totalNumberOfLabelAssignment+
-  			//		" divide "+ divide + " nul "+ uniqueLabel);
-  			result-= divide* (Math.log10(divide) / Math.log10(2)) ;
+  			result-= divide* (Math.log10(divide) / Math.log10(uniqueLabel)) ;
   			}
   		}
+  		}
   		return result;
-  		
+  			
   	}
   	
   	// writing percentage of all labels
@@ -76,16 +77,19 @@ public class INSTANCE {
   	//finding Max Frequent Label
   	public LABEL findMaxFrequentLabel(ArrayList<LABEL> allLabels) {
   		Integer index = this.countOfLabel.indexOf(Collections.max(this.countOfLabel));
-  		
   		return allLabels.get(index);
   		
   	}
     //finding Max Frequent Label percentage
   	public Integer percentageOfMaxLabel() {
-  		Integer numberOfLabelled=Collections.max(this.countOfLabel);
-  		Integer percentage = (numberOfLabelled*100) / this.totalNumberOfLabelAssignment;
-  		return percentage;
-  		
+  		if(this.totalNumberOfLabelAssignment!=0) {
+  		   Integer numberOfLabelled=Collections.max(this.countOfLabel);
+  		   Integer percentage = (numberOfLabelled*100) / this.totalNumberOfLabelAssignment;
+  		   return percentage;	
+  		}
+  		else {
+  			return 0;
+  		}	
   	}
   	// adding unique user into uniqueUsers list 
   	public void checkUniqueUsers( USER user ) {
@@ -194,6 +198,14 @@ public class INSTANCE {
 		this.labelInInstance = labelInInstance;
 	}
 
+	public ArrayList<Integer> getPercentageOfLabel() {
+		return percentageOfLabel;
+	}
+
+	public void setPercentageOfLabel(ArrayList<Integer> percentageOfLabel) {
+		this.percentageOfLabel = percentageOfLabel;
+	}
+    
 	
 	/*public void createLabelListFor( Integer numberOfLabel ){
 		for(int i=0; i< numberOfLabel;i++)
