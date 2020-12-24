@@ -225,5 +225,7 @@ public class USER {
 		this.average = average;
 	}
 
+	
+	
 
 }//class
