@@ -1,5 +1,9 @@
 import java.util.*;
 
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 
 public class INSTANCE implements finder {
       private long id;
@@ -9,7 +13,7 @@ public class INSTANCE implements finder {
       private Integer totalNumberOfLabelAssignment = 0;
       private ArrayList<USER> uniqueUsers = new ArrayList<>(); // store of unique users who labeled for each instance
       private ArrayList<Integer> percentageOfLabel = new ArrayList<>();// store of label percantage for each instance
-    
+     
       
       
 
@@ -23,12 +27,13 @@ public class INSTANCE implements finder {
   		
   	}
   	//calculating entropy
-  	public double entropy() {
+  	public double entropy( Logger logger) {
   		double result=0.0;
   		double divide;
   		double countOfLabel;
   		double totalNumberOfLabelAssignment;
-  		double uniqueLabel= calculateTotalNumberOfUniqueLabel();
+  		
+  		double uniqueLabel= calculateTotalNumberOfUniqueLabel(logger);
   		if(uniqueLabel!=0&&uniqueLabel!=1&& this.totalNumberOfLabelAssignment!=0) {
   		  for(int i=0; i<this.countOfLabel.size(); i++) {
   			
@@ -39,7 +44,9 @@ public class INSTANCE implements finder {
   			result-= divide* (Math.log10(divide) / Math.log10(uniqueLabel)) ;
   			}
   		}
+  		
   		}
+  		logger.info("instance id: "+this.getInstanceid()+ " entropy is calculated : "+result);
   		return result;
   			
   	}
@@ -51,8 +58,7 @@ public class INSTANCE implements finder {
   			
   		}
   	}
-  	
-  	
+
   
   	
   	
@@ -63,7 +69,7 @@ public class INSTANCE implements finder {
   			this.percentageOfLabel.add(0);}
   	}
   	// calculating percentage of each labels into percentageOfLabel array
-  	public void percentageOfLabels() {
+  	public void percentageOfLabels(Logger logger) {
   		if(this.totalNumberOfLabelAssignment!=0) {
   		Integer numberOfLabelled;
   		for(int i=0; i<this.percentageOfLabel.size() ; i++) {
@@ -71,45 +77,58 @@ public class INSTANCE implements finder {
   	  		Integer percentage = (numberOfLabelled*100) / this.totalNumberOfLabelAssignment;
   	  		this.percentageOfLabel.set(i, percentage);
   		}	
-  		}	 		
+  		}	
+  		logger.info("instance id: "+this.getInstanceid()+ " class labels and percentages are calculated " );
   	}	
   	
   	//finding Max Frequent Label
-  	public LABEL findMaxFrequentLabel(ArrayList<LABEL> allLabels) {
+  	public LABEL findMaxFrequentLabel(ArrayList<LABEL> allLabels,Logger logger) {
   		Integer index = this.countOfLabel.indexOf(Collections.max(this.countOfLabel));
+  		logger.info("instance id: "+this.getInstanceid()+ "  most frequent class label  is calculated : " +allLabels.get(index) );
   		return allLabels.get(index);
   		
+  		
   	}
+  	
+  	
     //finding Max Frequent Label percentage
-  	public Integer percentageOfMaxLabel() {
+  	public Integer percentageOfMaxLabel(Logger logger) {
   		if(this.totalNumberOfLabelAssignment!=0) {
   		   Integer numberOfLabelled=Collections.max(this.countOfLabel);
   		   Integer percentage = (numberOfLabelled*100) / this.totalNumberOfLabelAssignment;
+  		   logger.info("instance id: "+this.getInstanceid()+ "  most frequent class label percentage is calculated " );
   		   return percentage;	
   		}
   		else {
+  		
   			return 0;
   		}	
   	}
   	// adding unique user into uniqueUsers list 
-  	public void checkUniqueUsers( USER user ) {
-  		if(this.uniqueUsers.size()==0) 
+  	public void checkUniqueUsers( USER user , Logger logger) {
+  		if(this.uniqueUsers.size()==0) {
   			this.uniqueUsers.add(user);
-  		
-  		else if(!this.uniqueUsers.contains(user))
+  		}
+  		else if(!this.uniqueUsers.contains(user)) {
   				this.uniqueUsers.add(user);
-  		
+  		}
+  		logger.info("instance id: "+this.getInstanceid()+ "  number of unique users is calculated " );
   	}
   	// calculating Total Number Of Unique Label
-	public Integer calculateTotalNumberOfUniqueLabel() {
+	public Integer calculateTotalNumberOfUniqueLabel( Logger logger) {
+		
   		Integer count=0;
   		for(int i=0; i<this.countOfLabel.size(); i++)
   			if(this.countOfLabel.get(i)!=0)
   				count++;
+  		logger.info("instance id: "+this.getInstanceid()+ " total number of unique label is calculated " );
   		return count;
   	}
+	
+	
   	//calculating Total Number Of Label Assignment
-  	public void calculateTotalNumberOfLabelAssignment( ) {
+  	public void calculateTotalNumberOfLabelAssignment( Logger logger) {
+  		logger.info("instance id: "+this.getInstanceid()+ " total number of label assigmnet is calculated : " + this.totalNumberOfLabelAssignment);
   		this.totalNumberOfLabelAssignment++;
   		
   	}
