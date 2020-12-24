@@ -9,11 +9,14 @@ public class USER {
       private String name;
       private String usertype;
       private Double ConsistencyCheckProbability;
-      private Long totalNumberofınstance=(long)0;
+      private Long totalNumberofýnstance=(long)0;
       private ArrayList<INSTANCE>labeled=new ArrayList<INSTANCE>();
       private ArrayList<LABEL_ASSIGNMENT>labeled2=new ArrayList<LABEL_ASSIGNMENT>();
       private Long checkconsistency=(long)0;
       private ArrayList<Long>time=new ArrayList<Long>();
+      private Long Numofuniqueins=(long)0;
+      private double consistency=0.0;
+      private ArrayList<DATASET>dataset=new ArrayList<DATASET>();
       
 	public USER() {
 		// TODO Auto-generated constructor stub
@@ -110,22 +113,28 @@ public class USER {
 	}
 	
 public long average() {
-	long sum=0;
+	if(this.totalNumberofýnstance==0) {
+		return 0;
+	}else {
+		long sum=0;
 	for(int i=0;i<this.time.size();i++) {
 		sum=time.get(i);
 	}
-return sum/this.totalNumberofınstance;
-	
+return sum/this.totalNumberofýnstance;
+	}
 }
 
 public double stdeviation() {
-	long mean =average();
+	if(this.totalNumberofýnstance==0) {
+		return 0;
+	}else {
+	long mean =this.average();
 	double sum=0;
 	for(int i=0;i<this.time.size();i++) {
 		sum=Math.pow((time.get(i)-mean), 2);
 	}
-	double std=Math.sqrt((sum/(this.totalNumberofınstance-1)));
-	return std;
+	double std=Math.sqrt((sum/(this.totalNumberofýnstance-1)));
+	return std;}
 }
 
 public Long getCheckconsistency() {
@@ -133,23 +142,55 @@ public Long getCheckconsistency() {
 }
 
 public void setCheckconsistency(Long checkconsistency) {
-	if(checkconsistency==0) {
+	if(checkconsistency==-1) {
 		this.checkconsistency++;
 	}else {
 	this.checkconsistency = checkconsistency;
 }
 	}
 
-public Long getTotalNumberofınstance() {
-	return totalNumberofınstance;
+public Long getTotalNumberofýnstance() {
+	return totalNumberofýnstance;
 }
 
-public void setTotalNumberofınstance(Long totalNumberofınstance) {
-	if(totalNumberofınstance==-1) {
-		this.totalNumberofınstance++;
+public void setTotalNumberofýnstance(Long totalNumberofýnstance) {
+	if(totalNumberofýnstance==-1) {
+		this.totalNumberofýnstance++;
 	}
 	else {
-	this.totalNumberofınstance = totalNumberofınstance;
+	this.totalNumberofýnstance = totalNumberofýnstance;
     }
 	}
+
+public Long getNumofuniqueins() {
+	return Numofuniqueins;
+}
+
+public void setNumofuniqueins(Long numofuniqueins) {
+	if(numofuniqueins==-1) {
+		this.Numofuniqueins++;
+	}
+	else {
+	this.Numofuniqueins=numofuniqueins;
+    }
+}
+
+public double getConsistency() {
+	return consistency;
+}
+
+public void setConsistency() {
+	if(this.totalNumberofýnstance==0) {
+		this.consistency=0.0;
+	}else {
+	this.consistency=((double)this.checkconsistency/this.totalNumberofýnstance)*100;
+}}
+
+public ArrayList<DATASET> getDataset() {
+	return dataset;
+}
+
+public void setDataset(ArrayList<DATASET> dataset) {
+	this.dataset = dataset;
+}
 }
