@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class LABEL {
+public class LABEL implements finder {
       private long labelid;
       private String text;
       ArrayList<Integer> uniqueInstance = new ArrayList<>();
@@ -19,7 +19,7 @@ public void checkUniqueInstance(INSTANCE instance) {
 	}
 }
 
-public int find(ArrayList<LABEL>listoflabel,long labelid) {
+public int find(ArrayList<LABEL>listoflabel,ArrayList<INSTANCE>list,Long labelid) {
 	for(int c=0;c<listoflabel.size();c++) {
 		if(labelid==listoflabel.get(c).labelid) {
 			return c;
@@ -47,4 +47,6 @@ public ArrayList<Integer> getUniqueInstance() {
 public void setUniqueInstance(ArrayList<Integer> uniqueInstance) {
 	this.uniqueInstance = uniqueInstance;
 }
+
+
 }
