@@ -66,8 +66,5 @@ public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Ins
 	public void setCompleteness(double completeness) {
 		this.completeness = completeness;
 	}
-
-
-	
 	
 }
