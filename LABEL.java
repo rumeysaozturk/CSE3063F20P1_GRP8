@@ -47,6 +47,4 @@ public ArrayList<Integer> getUniqueInstance() {
 public void setUniqueInstance(ArrayList<Integer> uniqueInstance) {
 	this.uniqueInstance = uniqueInstance;
 }
-
-
 }
