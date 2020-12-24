@@ -108,5 +108,4 @@ public class LABEL_ASSIGNMENT {
 		this.labels = labels;
 	}
 	
-	
 }
