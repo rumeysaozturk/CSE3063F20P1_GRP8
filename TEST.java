@@ -79,6 +79,7 @@ public class TEST {
 	    
 	         JSONArray jsonArrayUser = (JSONArray)(jsonUser.get("users"));
 	     
+	      
 	      for (int i=0;i<jsonArray.size();i++) {
 	    	  JSONObject a=(JSONObject) jsonArray.get(i);
 		        LABEL a1=new LABEL((long) a.get("label id"),(String) a.get("label text"));
@@ -86,15 +87,16 @@ public class TEST {
 		        
 	      }
 	          
-	      INSTANCE a3;	         
+	      INSTANCE addInstance;	         
 	      for (int i=0;i<jsonArray1.size();i++) {
-	    	  JSONObject a2=(JSONObject) jsonArray1.get(i);
-		         a3 =new INSTANCE((long) a2.get("id"),(String) a2.get("instance"));
-		         a3.createListForLabelCount(listOfLabel.size());// creating countOfLabel list and assign 0 to countOfLabel list in the beginning
-		         a3.createListForLabelPercentage(listOfLabel.size());//// creating percentageOfLabel list and assign 0 to percentageOfLabel list in the beginning
-		        listOfInstance.add(a3);
+	    	    JSONObject a2=(JSONObject) jsonArray1.get(i);
+	    	    addInstance =new INSTANCE((long) a2.get("id"),(String) a2.get("instance"));
+	    	    addInstance.createListForLabelCount(listOfLabel.size());// creating countOfLabel list and assign 0 to countOfLabel list in the beginning
+	    	    addInstance.createListForLabelPercentage(listOfLabel.size());//// creating percentageOfLabel list and assign 0 to percentageOfLabel list in the beginning
+		        listOfInstance.add(addInstance);
 		        
 	      }    
+	  
 	      
 	      //GENERATE A USER************************************
 		  ArrayList <USER> listOfUser =new ArrayList<USER>();
@@ -129,9 +131,9 @@ public class TEST {
 	         JSONArray jsonArrayUser1 = (JSONArray)(jsonUser1.get("users"));
 	         for(int i=0; i<jsonArrayUser1.size(); i++) {
 	        	 JSONObject a21=(JSONObject) jsonArrayUser1.get(i);
-	        	 long TotalNumberofınstance=(long)a21.get("totalNumberofınstance");
+	        	 long TotalNumberofÄ±nstance=(long)a21.get("totalNumberofÄ±nstance");
 	       // 	 long checkconsistency=(long)a21.get("checkconsistency");
-	        	 listOfUser.get(i).setTotalNumberofınstance(TotalNumberofınstance);
+	        	 listOfUser.get(i).setTotalNumberofÄ±nstance(TotalNumberofÄ±nstance);
 	        	// listOfUser.get(i).setCheckconsistency(checkconsistency);
 	         }}
 		     
@@ -148,7 +150,7 @@ public class TEST {
 		          for(int i=0; i<jsonArrayUser1.size(); i++) {
 		         	 JSONObject a21=(JSONObject) jsonArrayUser1.get(i);
 		      
-		         	 long id=(long)a21.get("user ıd");
+		         	 long id=(long)a21.get("user Ä±d");
 		         	 System.out.print(id+" ");
 		         	    JSONArray jsonArrayUserlabeled = (JSONArray)a21.get("labeled");
 		         	    for(int c=0;c<jsonArrayUserlabeled.size();c++) {
@@ -244,6 +246,20 @@ public class TEST {
 		    		   
 		    	       }    		  
 		    	  } 
+		      }
+		      
+		      //UNIQUE INSTANCE FOR EACH LABEL READ 
+		      JSONArray labelArray = (JSONArray)(jsonRead.get("LabelArray"));
+		      ArrayList<Integer> labelArrayPrevious=new ArrayList<>();
+		      for (int z=0;z<listOfLabel.size();z++) {
+		    	  JSONArray object=(JSONArray)labelArray.get(z);
+		    	  labelArrayPrevious=new ArrayList<>();
+		    	  for(int j=0; j<object.size(); j++) {
+		    		  convert=String.valueOf(object.get(j));
+		    		  labelArrayPrevious.add(Integer.valueOf(convert));
+		    		  System.out.print(convert);
+		    	  }
+		    	  listOfLabel.get(z).setUniqueInstance(labelArrayPrevious);	    	  
 		      } 
       
 	         }
@@ -286,10 +302,11 @@ public class TEST {
 	        		 entropy=listOfInstance.get(random).entropy();//calculating entropy
 	        		 
 	        		 listOfInstance.get(random).writingPercOfLabels();//writing percentage of all labels
+	        		 listOfLabel.get(random1).checkUniqueInstance(listOfInstance.get(random));
 	        		 
 	        		 currentusers.get(l).addInstance((listOfInstance.get(random)));
 	        		 currentusers.get(l).setLabeled2(one);
-	                 currentusers.get(l).setTotalNumberofınstance((long)-1);
+	                 currentusers.get(l).setTotalNumberofÄ±nstance((long)-1);
 	                 
 				    //USER METRICS
 					 FileWriter  file3 =new FileWriter("Secret/usermet.json");
@@ -300,11 +317,14 @@ public class TEST {
 				     printusermet(file3,listOfUser);	
 	                 
 	                 //INSTANCE METRICS
-	                 print.backup(listOfInstance,current.getId());
+	                 print.backup(listOfInstance,listOfLabel,current.getId());
 	        		 print.printInstanceMetrics(listOfInstance,listOfLabel, current.getId(),logger);
+	        		 
+	        		 //DATASET METRICS
+	        		 print.printDatasetMetrics(listOfInstance,listOfLabel,current.getId(),current.getNumofuser(),logger);
 	                 
 	        		 System.out.println("user id: " +one.getUserId()+" instance id: "+one.getInstanceId()+" label: "+one.getLabels().getText()+" date time: "+one.getDatetime());
-	        		 System.out.println("InstanceId: "+ listOfInstance.get(random).getInstanceid()+ " LabelId: "+one.getLabels().getLabelid()+ " CurrenOlanLabelKaÃ§KezLabellendi: " + listOfInstance.get(random).getCountOfLabel().get((int)one.getLabels().getLabelid()-1)+
+	        		 System.out.println("InstanceId: "+ listOfInstance.get(random).getInstanceid()+ " LabelId: "+one.getLabels().getLabelid()+ " CurrenOlanLabelKaÃƒÂ§KezLabellendi: " + listOfInstance.get(random).getCountOfLabel().get((int)one.getLabels().getLabelid()-1)+
 	        				 "\nnTotalCountOfLabelAssignment: " + listOfInstance.get(random).getTotalNumberOfLabelAssignment()+ " UniqueLabel:"+ numberOfUniqueLabel+
 	        				 	" UniqueUser: "+ listOfInstance.get(random).getUniqueUsers().size() + " FrequentyLabelId: " + maxFrequentLabel.getLabelid() + " percentage: %"+ maxFrequentLabelPercentage +
 	        				 	" Entropy: "+ entropy +"\n");
@@ -353,7 +373,7 @@ public class TEST {
 				  currentu.getLabeled().get(random).percentageOfLabels();
 			      //currentu.getLabeled().get(random).writingPercOfLabels();
 				  entropy=currentu.getLabeled().get(random).entropy();
-				  		 		
+				  listOfLabel.get(random1).checkUniqueInstance(currentu.getLabeled().get(random));		 		
 				  
 				    //WRITE USER METRICS
 				    FileWriter  file3 =new FileWriter("Secret/usermet.json");
@@ -364,16 +384,19 @@ public class TEST {
 			        printusermet(file3,listOfUser);	
 			        
 			        //INSTANCE METRICS
-			        print.backup(listOfInstance,current.getId());
+			        print.backup(listOfInstance,listOfLabel,current.getId());
 					print.printInstanceMetrics(listOfInstance,listOfLabel,current.getId(),logger);
+					
+					//DATASET METRICS
+	        		 print.printDatasetMetrics(listOfInstance,listOfLabel,current.getId(),current.getNumofuser(),logger);
 					  
 		 		System.out.println("user id: "+two.getUserId()+ " instance id: "+two.getInstanceId()+" label: "+two.getLabels().getText()+" date time: "+two.getDatetime());
-		 		System.out.println("InstanceId: "+ (currentu.getLabeled().get(random).getInstanceid()+ " LabelId: "+two.getLabels().getLabelid()+ " CurrenOlanLabelKaÃ§KezLabellendi: " + currentu.getLabeled().get(random).getCountOfLabel().get((int)two.getLabels().getLabelid()-1)+
+		 		System.out.println("InstanceId: "+ (currentu.getLabeled().get(random).getInstanceid()+ " LabelId: "+two.getLabels().getLabelid()+ " CurrenOlanLabelKaÃƒÂ§KezLabellendi: " + currentu.getLabeled().get(random).getCountOfLabel().get((int)two.getLabels().getLabelid()-1)+
 						 "\nnTotalCountOfLabelAssignment: " + currentu.getLabeled().get(random).getTotalNumberOfLabelAssignment())+" UniqueLabel:"+ numberOfUniqueLabel+
 		 					" UniqueUser: "+ currentu.getLabeled().get(random).getUniqueUsers().size()+ " FrequentyLabelId: " + maxFrequentLabel.getLabelid() + " percentage: %"+ maxFrequentLabelPercentage+
 		 						" Entropy: "+ entropy +"\n");
 				 
-		 	     currentu.setTotalNumberofınstance((long)-1);
+		 	     currentu.setTotalNumberofÄ±nstance((long)-1);
 		
 		 		//System.out.println("INSTANCE ID:" +currentu.getLabeled().get(random).getInstanceid()+" " + currentu.getLabeled().get(random).getLabels().get(currentu.getLabeled().get(random).getLabels().size() -1).getLabelid());
 		 	   // System.out.println("user id: " +two.getUserId()+" instance id: "+two.getInstanceId()+" label: "+two.getLabels().getText()+" date time: "+two.getDatetime());
@@ -407,12 +430,13 @@ public class TEST {
 					cInstance.percentageOfLabels();
 					//cInstance.writingPercOfLabels();
 					entropy=cInstance.entropy();
-					print.backup(listOfInstance,current.getId());
-					print.printInstanceMetrics(listOfInstance,listOfLabel,current.getId(),logger);
 
-					 
+					currentlabel.checkUniqueInstance(cInstance);
+					
+				
+				 
 					System.out.println("user id: "+two.getUserId()+" instance id: "+two.getInstanceId()+" label: "+two.getLabels().getText()+" date time: "+two.getDatetime());
-					 System.out.println("InstanceId: "+ (cInstance.getInstanceid()+ " LabelId: "+two.getLabels().getLabelid()+ " CurrenOlanLabelKaÃ§KezLabellendi: " + cInstance.getCountOfLabel().get((int)two.getLabels().getLabelid()-1)+
+					 System.out.println("InstanceId: "+ (cInstance.getInstanceid()+ " LabelId: "+two.getLabels().getLabelid()+ " CurrenOlanLabelKaÃƒÂ§KezLabellendi: " + cInstance.getCountOfLabel().get((int)two.getLabels().getLabelid()-1)+
 							 "\nTotalCountOfLabelAssignment: " + cInstance.getTotalNumberOfLabelAssignment())+" UniqueLabel:"+ numberOfUniqueLabel+
 							 	" UniqueUser: "+ cInstance.getUniqueUsers().size()+ " FrequentyLabelId: " + maxFrequentLabel.getLabelid() + " percentage: %"+ maxFrequentLabelPercentage +
 							 	" Entropy: "+ entropy +"\n");
@@ -421,9 +445,10 @@ public class TEST {
 					
 					currentu.getLabeled().add(cInstance);
 					currentu.setLabeled2(two);
-				    currentu.setTotalNumberofınstance((long)-1);
+				    currentu.setTotalNumberofÄ±nstance((long)-1);
 				    System.out.println("user id: " +two.getUserId()+" instance id: "+two.getInstanceId()+" label: "+two.getLabels().getText()+" date time: "+two.getDatetime());
                     
+				    
 				    //WRITE USER METRICS
 				    FileWriter  file3 =new FileWriter("Secret/usermet.json");
 					FileWriter file1 =new FileWriter(file2);
@@ -431,6 +456,13 @@ public class TEST {
 					printuserarray(file1,listOfUser);
 			        file3.write(" ");	
 			        printusermet(file3,listOfUser);	  
+			        
+			    	//INSTANCE METRICS
+					print.backup(listOfInstance,listOfLabel,current.getId());
+					print.printInstanceMetrics(listOfInstance,listOfLabel,current.getId(),logger);
+			        
+			      //DATASET METRICS
+	        		 print.printDatasetMetrics(listOfInstance,listOfLabel, current.getId(),current.getNumofuser(),logger);
 				    break;  
 				}
 
@@ -445,7 +477,7 @@ public class TEST {
 		     
 		     }
 	 
-	   System.out.println(currentusers.get(0).getUserId()+" "+currentusers.get(0).getTotalNumberofınstance()+" "+currentusers.get(0).getLabeled().size());
+	   System.out.println(currentusers.get(0).getUserId()+" "+currentusers.get(0).getTotalNumberofÄ±nstance()+" "+currentusers.get(0).getLabeled().size());
 	   for( i=0;i<currentusers.get(0).getLabeled2().size();i++) {
 		   System.out.println("user id: " +currentusers.get(0).getLabeled2().get(i).getUserId()+" instance id: "+currentusers.get(0).getLabeled2().get(i).getInstanceId()+" label: "+currentusers.get(0).getLabeled2().get(i).getLabels().getText()+" date time: "+currentusers.get(0).getLabeled2().get(i).getDatetime());
 	    	 
@@ -492,11 +524,12 @@ public static void printusermet(FileWriter file1,ArrayList<USER>listofuser) thro
 	  file1.write("{");
       file1.write("\"users\":[");
 	  for(int c=0;c<listofuser.size();c++) {
-		 file1.write("{\"userId\":"+listofuser.get(c).getUserId()+","+"\"totalNumberofınstance\":"+listofuser.get(c).getTotalNumberofınstance()+", \"user name\": \""+
+		 file1.write("{\"userId\":"+listofuser.get(c).getUserId()+","+"\"totalNumberofÄ±nstance\":"+listofuser.get(c).getTotalNumberofÄ±nstance()+", \"user name\": \""+
 	     listofuser.get(c).getName()+"\" },\n");
 	  }
     
-   
+    //Print Users to json file
+ 
    // file1.write("]\n");
     file1.write("]\n}\n");
    
@@ -509,7 +542,7 @@ public static  void printuserarray(FileWriter file2,ArrayList<USER>listofuser) t
     file2.write("\"users\":[");
  
     for (int c=0;c<listofuser.size();c++) {
-   	file2.write("{\"user ıd\":"+listofuser.get(c).getUserId()+",");
+   	file2.write("{\"user Ä±d\":"+listofuser.get(c).getUserId()+",");
    	file2.write("\"labeled\":[");
    	 for(int i=0;i<listofuser.get(c).getLabeled().size();i++) {
    	           file2.write("{ \"instance id \" :"+listofuser.get(c).getLabeled().get(i).getInstanceid()+"},");
