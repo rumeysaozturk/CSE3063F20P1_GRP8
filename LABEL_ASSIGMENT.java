@@ -31,39 +31,7 @@ public class LABEL_ASSIGNMENT {
 	    this.datetime = stringDate;
 	}
 	
-    /*  //Sort Labels
-  public void sortLabels() {
-		   int l=0; int m=0; LABEL temp;
-		   for(l=0;l<this.getLabels().size();l++) {
-	    		for(m=0; m <this.getLabels().size();m++) {
-	    		 if(this.getLabels().get(l).getLabelid() < this.getLabels().get(m).getLabelid()) {      //swap elements if not in order
-	                 temp = this.getLabels().get(l);   
-	                 this.getLabels().set(l,this.getLabels().get(m));
-	                 this.getLabels().set(m,temp);    
-	               } 
-	    		}    		
-	    	  }
-	   }
-	*/
-	 //Prints actions
-	 /* public void print(Logger logger) {
-		   String message="";
-		   message="instance id:" + this.instanceId + ", class labels ids:[" ;
-		      
-	          int n=0;
-	          for(n=0; n<this.labels.size(); n++) {
-	        	  if(n==this.labels.size()-1) {
-	        		  message+=this.labels.get(n).getLabelid()+"],";
-	        	  }
-	        	  else {
-	        		  message+=this.labels.get(n).getLabelid()+",";
-	        	  }
-	          }
-	          message+=" user:" +this.userId+",";
-	          message+=" datetime:" +this.getDatetime()+" is created.";
-	          logger.info(message);
-	   }*/
-	
+   
 
 	public String getDatetime() {
 		return datetime;
