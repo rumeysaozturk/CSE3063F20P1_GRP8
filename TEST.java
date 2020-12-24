@@ -56,7 +56,7 @@ public class TEST {
 	    
 	         //Parsing the contents of the JSON file
 	         //Forming URL
-	      /*burası filedan okuncak*/
+	      /*burasÃ½ filedan okuncak*/
 	    DATASET current=dataset1.get(0);
 	         logger.info("Input file is read succesfully.\n");
 	         logger.info("Dataset id: "+ current.getId()+ " is created");
@@ -79,21 +79,23 @@ public class TEST {
 	         //Iterating the contents of the array
 	    
 	         JSONArray jsonArrayUser = (JSONArray)(jsonUser.get("users"));
+	         /////////////////////////////////////////////////////////////////////////////
+	         
+
 	        	      
 	      for (int i=0;i<jsonArray.size();i++) {
 	    	  JSONObject a=(JSONObject) jsonArray.get(i);
-		        long id =(long) a.get("label id");
-		        String text=(String) a.get("label text");
-		        LABEL a1=new LABEL(id,text);
+		        LABEL a1=new LABEL((long) a.get("label id"),(String) a.get("label text"));
 		        listOfLabel.add(a1);
 		        
 	      }
-    
+	      
+	      INSTANCE a3;	         
 	      for (int i=0;i<jsonArray1.size();i++) {
 	    	  JSONObject a2=(JSONObject) jsonArray1.get(i);
-		        long id1 =(long) a2.get("id");
-		        String text2=(String) a2.get("instance");
-		       INSTANCE a3=new INSTANCE(id1,text2);
+		         a3 =new INSTANCE((long) a2.get("id"),(String) a2.get("instance"));
+		         a3.createListForLabelCount(listOfLabel.size());// creating countOfLabel list and assign 0 to countOfLabel list in the beginning
+		         a3.createListForLabelPercentage(listOfLabel.size());//// creating percentageOfLabel list and assign 0 to percentageOfLabel list in the beginning
 		        listOfInstance.add(a3);
 		        
 	      }    
@@ -102,17 +104,10 @@ public class TEST {
 		  ArrayList <USER> listOfUser =new ArrayList<USER>();
 		 
 	
-	      int lengthUser=jsonArrayUser.size();
 	      USER user;
-	      String text2="";
-	      String text3="";
 	      for(int i=0; i<jsonArrayUser.size(); i++) {
 	    	  JSONObject a2=(JSONObject) jsonArrayUser.get(i);
-		        long id1 =(long) a2.get("user id");
-		        text2=(String) a2.get("user name");
-		        text3=(String) a2.get("user type");
-		        Double ConsistencyCheckProbability=(double)a2.get("ConsistencyCheckProbability");
-		        user = new USER(id1,text2,text3,ConsistencyCheckProbability);
+		        user = new USER((long) a2.get("user id"),(String) a2.get("user name"),(String) a2.get("user type"),(double)a2.get("ConsistencyCheckProbability"));
 	    	    listOfUser.add(user);
 	    	    user.printUser(logger);
 	    	   
@@ -120,12 +115,18 @@ public class TEST {
 	      System.out.println();
           
 	        //**********************RANDOM ASSIGNMENT************************************************
-	      ArrayList<USER>currentusers=new ArrayList<USER>();
+	      ArrayList<USER> currentusers=new ArrayList<USER>();
 	      int i=0;
 	    	 int rand=(int)((Math.random())*(listOfUser.size()));
 	    	
 	         USER cuser1=listOfUser.get(rand);
 	         currentusers.add(cuser1) ;
+	         
+	         Integer numberOfUniqueLabel;
+	         LABEL maxFrequentLabel= new LABEL();
+	         Integer maxFrequentLabelPercentage;
+	         double entropy;
+	         
 	    while(true) {
 	   	 int random=(int)(Math.random()*(listOfUser.size()));
 	     USER cuser=listOfUser.get(random);
@@ -138,57 +139,133 @@ public class TEST {
 	if(currentusers.size()==nuser) {
 		break;
 	}}
-	 for(int l=0;l<currentusers.size();l++)  	{
-	int  random=(int)(Math.random()*(listOfInstance.size()));
-	int random1=(int)(Math.random()*(listOfLabel.size()));
-	System.out.println(random+" ndndndnd");
-	LABEL_ASSIGNMENT one=new LABEL_ASSIGNMENT(currentusers.get(l).getUserId(),listOfInstance.get(random).getInstanceid(),listOfLabel.get(random1));
-	 System.out.println(one.getUserId()+" "+one.getInstanceId()+" "+one.getLabels().getText()+" "+one.getDatetime());
-	(currentusers.get(l)).addInstance((listOfInstance.get(random)));
+	    ///////////////////////////////////////////////////////////////////////////////////////////  ILK ATAMA 
+	 for(int l=0;l<currentusers.size();l++) {
+		 
+		 
+		 
+		 int  random=(int)(Math.random()*(listOfInstance.size()));
+		 int random1=(int)(Math.random()*(listOfLabel.size()));
+		 LABEL_ASSIGNMENT one=new LABEL_ASSIGNMENT(currentusers.get(l).getUserId(),listOfInstance.get(random).getInstanceid(),listOfLabel.get(random1));
+		
+		 listOfInstance.get(random).addLabel(listOfLabel.get(random1));//adding label to labelInInstance
+		 
+		 Integer intObj = new Integer((int)(long)listOfLabel.get(random1).getLabelid());// casting label id to Integer
+		 listOfInstance.get(random).setLabelCount(intObj); //counting label in the listOfInstance
+		 listOfInstance.get(random).calculateTotalNumberOfLabelAssignment(); //calculating Total Number Of Label Assignment
+		 numberOfUniqueLabel=listOfInstance.get(random).calculateTotalNumberOfUniqueLabel();//calculating Total Number Of Unique Label
+		 listOfInstance.get(random).checkUniqueUsers( currentusers.get(l));//adding user into uniqueUsers list  
+		 maxFrequentLabel = listOfInstance.get(random).findMaxFrequentLabel(listOfLabel);// finding Max Frequent Label
+		 maxFrequentLabelPercentage = listOfInstance.get(random).percentageOfMaxLabel();//finding Max Frequent Label percentage
+		 listOfInstance.get(random).percentageOfLabels();//calculating percentage of each labels into percentageOfLabel array
+		 entropy=listOfInstance.get(random).entropy();//calculating entropy
+		 
+		 listOfInstance.get(random).writingPercOfLabels();//writing percentage of all labels
+		 System.out.println("user id: " +one.getUserId()+" instance id: "+one.getInstanceId()+" label: "+one.getLabels().getText()+" date time: "+one.getDatetime());
+		 System.out.println("InstanceId: "+ listOfInstance.get(random).getInstanceid()+ " LabelId: "+one.getLabels().getLabelid()+ " CurrenOlanLabelKaÃ§KezLabellendi: " + listOfInstance.get(random).getCountOfLabel().get((int)one.getLabels().getLabelid()-1)+
+				 "\nnTotalCountOfLabelAssignment: " + listOfInstance.get(random).getTotalNumberOfLabelAssignment()+ " UniqueLabel:"+ numberOfUniqueLabel+
+				 	" UniqueUser: "+ listOfInstance.get(random).getUniqueUsers().size() + " FrequentyLabelId: " + maxFrequentLabel.getLabelid() + " percentage: %"+ maxFrequentLabelPercentage +
+				 	" Entropy: "+ entropy +"\n");
+		 
+		 currentusers.get(l).addInstance((listOfInstance.get(random)));
+
+	
 	 }
+	 
+	 
+	 
 	  i=0;
-	 while(i<150) {
-		    int randomuser=(int)(Math.random()*(currentusers.size()));
+	 while(i<20) {
+		 
+		 
+		     int randomuser=(int)(Math.random()*(currentusers.size()));
 		     USER currentu=currentusers.get(randomuser);
 		     int checkprob=(int)(Math.random()*(100));
+		     
+		      /////////////////////////////////////////////////////////////////////////////////  CCP KÃœÃ‡ÃœKSE ATAMA
+		     
 		     if(checkprob<currentu.getConsistencyCheckProbability()*100) {
-		    	 int  random=(int)(Math.random()*(currentu.getLabeled().size()));
+		    	int  random=(int)(Math.random()*(currentu.getLabeled().size()));
 		    	
 		 		int random1=(int)(Math.random()*(listOfLabel.size()));
 		 	
 		 		LABEL_ASSIGNMENT two=new LABEL_ASSIGNMENT(currentu.getUserId(),currentu.getLabeled().get(random).getInstanceid(),listOfLabel.get(random1));
-		 		 System.out.println(two.getUserId()+" "+two.getInstanceId()+" "+two.getLabels().getText()+" "+two.getDatetime());
+		 		
+		 		
+		 		
+		 		currentu.getLabeled().get(random).addLabel(two.getLabels());
+		 		Integer intObj = new Integer((int)(long)two.getLabels().getLabelid());
+		 		currentu.getLabeled().get(random).setLabelCount(intObj);
+		 		
+		 		currentu.getLabeled().get(random).calculateTotalNumberOfLabelAssignment();
+		 		numberOfUniqueLabel=currentu.getLabeled().get(random).calculateTotalNumberOfUniqueLabel();
+		 		currentu.getLabeled().get(random).checkUniqueUsers( currentu);
+		 		maxFrequentLabel = currentu.getLabeled().get(random).findMaxFrequentLabel(listOfLabel);
+				maxFrequentLabelPercentage = currentu.getLabeled().get(random).percentageOfMaxLabel();
+				currentu.getLabeled().get(random).percentageOfLabels();
+				currentu.getLabeled().get(random).writingPercOfLabels();
+				entropy=currentu.getLabeled().get(random).entropy();
+		 		
+		 		System.out.println("user id: "+two.getUserId()+ " instance id: "+two.getInstanceId()+" label: "+two.getLabels().getText()+" date time: "+two.getDatetime());
+		 		System.out.println("InstanceId: "+ (currentu.getLabeled().get(random).getInstanceid()+ " LabelId: "+two.getLabels().getLabelid()+ " CurrenOlanLabelKaÃ§KezLabellendi: " + currentu.getLabeled().get(random).getCountOfLabel().get((int)two.getLabels().getLabelid()-1)+
+						 "\nnTotalCountOfLabelAssignment: " + currentu.getLabeled().get(random).getTotalNumberOfLabelAssignment())+" UniqueLabel:"+ numberOfUniqueLabel+
+		 					" UniqueUser: "+ currentu.getLabeled().get(random).getUniqueUsers().size()+ " FrequentyLabelId: " + maxFrequentLabel.getLabelid() + " percentage: %"+ maxFrequentLabelPercentage+
+		 						" Entropy: "+ entropy +"\n");
+				 
+		 		//System.out.println("INSTANCE ID:" +currentu.getLabeled().get(random).getInstanceid()+" " + currentu.getLabeled().get(random).getLabels().get(currentu.getLabeled().get(random).getLabels().size() -1).getLabelid());
 		 		
 		    	 
 		     }
-		     else {
+		     
+		     
+		    else {
+		    	
+		    	///////////////////////////////////////////////////////////////////////////////////  CCP BÃœYÃœKSE ATAMA
 		
 			
 			int random1=(int)(Math.random()*(listOfLabel.size()));
 			LABEL currentlabel=listOfLabel.get(random1);
+			
 			while(true) {
-			
 				int  random=(int)(Math.random()*(listOfInstance.size()));
-				INSTANCE cınstance=listOfInstance.get(random);
-			 if(currentu.getLabeled().contains(cınstance)) {
-				 if(currentu.getLabeled().size()==listOfInstance.size()){
-			    	break;
-			     } 
+				INSTANCE cInstance=listOfInstance.get(random);
 				
-				 continue;}
-			     else {
-			    	 LABEL_ASSIGNMENT two=new LABEL_ASSIGNMENT(currentu.getUserId(),cınstance.getInstanceid(),currentlabel);
-			 		 System.out.println(two.getUserId()+" "+two.getInstanceId()+" "+two.getLabels().getText()+" "+two.getDatetime());
-			 		 currentu.getLabeled().add(cınstance);
-			   break;  }
-			
-				
-			
+				if(currentu.getLabeled().contains(cInstance)) {
+			    	 continue;
+			     }
+				else {
+					LABEL_ASSIGNMENT two=new LABEL_ASSIGNMENT(currentu.getUserId(),cInstance.getInstanceid(),currentlabel);
+					cInstance.addLabel(two.getLabels());
+					Integer intObj = new Integer((int)(long)two.getLabels().getLabelid());
+					cInstance.setLabelCount(intObj);
+					
+					cInstance.calculateTotalNumberOfLabelAssignment();
+					numberOfUniqueLabel=cInstance.calculateTotalNumberOfUniqueLabel();
+					cInstance.checkUniqueUsers( currentu);
+					maxFrequentLabel = cInstance.findMaxFrequentLabel(listOfLabel);
+					maxFrequentLabelPercentage = cInstance.percentageOfMaxLabel();
+					cInstance.percentageOfLabels();
+					cInstance.writingPercOfLabels();
+					entropy=cInstance.entropy();
+					 
+					System.out.println("user id: "+two.getUserId()+" instance id: "+two.getInstanceId()+" label: "+two.getLabels().getText()+" date time: "+two.getDatetime());
+					 System.out.println("InstanceId: "+ (cInstance.getInstanceid()+ " LabelId: "+two.getLabels().getLabelid()+ " CurrenOlanLabelKaÃ§KezLabellendi: " + cInstance.getCountOfLabel().get((int)two.getLabels().getLabelid()-1)+
+							 "\nTotalCountOfLabelAssignment: " + cInstance.getTotalNumberOfLabelAssignment())+" UniqueLabel:"+ numberOfUniqueLabel+
+							 	" UniqueUser: "+ cInstance.getUniqueUsers().size()+ " FrequentyLabelId: " + maxFrequentLabel.getLabelid() + " percentage: %"+ maxFrequentLabelPercentage +
+							 	" Entropy: "+ entropy +"\n");
+									
+			 		//System.out.println("INSTANCE ID:" +cInstance.getInstanceid()+" " + cInstance.getLabels().get(cInstance.getLabels().size() -1).getLabelid());
+					
+					currentu.getLabeled().add(cInstance);
+					break;  
+				}
+
 		
-		     }
+		     }//while
 			
-		     }
-		     System.out.println(i);i++;}
+		    }//else
+		     
+		     i++;}
 	 
 	   
 	  
@@ -249,35 +326,37 @@ public class TEST {
 	         e.printStackTrace();
 	      }*/
 	    
-}
+	   }//main
 	   
 
 	   
-public static void createDatasets(JSONArray jsonArraydataset,ArrayList<DATASET>datasets) throws FileNotFoundException, IOException, ParseException{
-	JSONParser jsonParser = new JSONParser();
-	 for (int i=0;i<jsonArraydataset.size();i++) {
-   	  JSONObject a=(JSONObject) jsonArraydataset.get(i);
+	   public static void createDatasets(JSONArray jsonArraydataset,ArrayList<DATASET>datasets) throws FileNotFoundException, IOException, ParseException{
+		   JSONParser jsonParser = new JSONParser();
+		   for (int i=0;i<jsonArraydataset.size();i++) {
+			   JSONObject a=(JSONObject) jsonArraydataset.get(i);
    
-	JSONObject dataset= (JSONObject)jsonParser.parse(new FileReader(a.get("filepath").toString()));
-    JSONArray jsonArray = (JSONArray)(dataset.get("class labels"));
-    JSONArray jsonArray1 = (JSONArray)(dataset.get("instances"));
+			   JSONObject dataset= (JSONObject)jsonParser.parse(new FileReader(a.get("filepath").toString()));
+			   JSONArray jsonArray = (JSONArray)(dataset.get("class labels"));
+			   JSONArray jsonArray1 = (JSONArray)(dataset.get("instances"));
 
-    DATASET a1=new DATASET((long)dataset.get("dataset id"),(long)dataset.get("maximum number of labels per instance"),(String)dataset.get("dataset name"),jsonArray,jsonArray1,(Long)a.get("numberofuser"));
-    datasets.add(a1);
-	}
-}
-public static boolean find(ArrayList<USER>array,USER user) {
-if(array.contains(user)) {
-	return true;
-}
-else {
-	return false;
-}
-}
+			   DATASET a1=new DATASET((long)dataset.get("dataset id"),(long)dataset.get("maximum number of labels per instance"),(String)dataset.get("dataset name"),jsonArray,jsonArray1,(Long)a.get("numberofuser"));
+			   datasets.add(a1);
+		   }
+	   }//createDatasets
+	   
+	   
+	   
+	   public static boolean find(ArrayList<USER>array,USER user) {
+		   if(array.contains(user)) {
+			   return true;
+		   }
+		   else {
+			   return false;
+		   }
+	   }//find
 
 
 
 	
-}
+}//class
 	   
-
