@@ -1,8 +1,10 @@
 
+import java.util.ArrayList;
+
 public class INSTANCE {
       private long id;
       private String instance;
-      
+    
 	public INSTANCE() {
 		// TODO Auto-generated constructor stub
 	}
@@ -27,5 +29,6 @@ public class INSTANCE {
 	public void setInstanceid(long id) {
 		this.id = id;
 	}
+
 
 }
