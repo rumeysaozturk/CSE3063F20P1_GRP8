@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class LABEL implements finder {
       private long labelid;
@@ -13,10 +16,11 @@ public class LABEL implements finder {
    }
    
 //check the unique instance
-public void checkUniqueInstance(INSTANCE instance) {
+public void checkUniqueInstance(INSTANCE instance,Logger logger) {
 	if(!this.uniqueInstance.contains(Integer.valueOf(String.valueOf(instance.getInstanceid())))) {
 		this.uniqueInstance.add(Integer.valueOf(String.valueOf(instance.getInstanceid())));
 	}
+	logger.info("label id: "+this.labelid + " unique instance is calculated");
 }
 
 public int find(ArrayList<LABEL>listoflabel,ArrayList<INSTANCE>list,Long labelid) {
