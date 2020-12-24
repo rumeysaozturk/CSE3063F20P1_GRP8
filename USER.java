@@ -152,6 +152,4 @@ public void setTotalNumberofınstance(Long totalNumberofınstance) {
 	this.totalNumberofınstance = totalNumberofınstance;
     }
 	}
-	
-	
 }
