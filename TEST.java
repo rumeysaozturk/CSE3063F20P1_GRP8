@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -65,8 +64,8 @@ public class TEST {
 	         logger.info("maximum number of labels per instance: "+current.getMax_label()+ " is created\n");
 	         //Take the maximum labels for each instances
 	         maxLabel =current.getMax_label();
-	      
-	         
+	        Long nuser=current.getNumofuser();
+	  
 	         //Retrieving the array
 	         JSONArray jsonArray = current.getLabels();
 	         
@@ -112,92 +111,88 @@ public class TEST {
 		        long id1 =(long) a2.get("user id");
 		        text2=(String) a2.get("user name");
 		        text3=(String) a2.get("user type");
-		        user = new USER(id1,text2,text3);
+		        Double ConsistencyCheckProbability=(double)a2.get("ConsistencyCheckProbability");
+		        user = new USER(id1,text2,text3,ConsistencyCheckProbability);
 	    	    listOfUser.add(user);
 	    	    user.printUser(logger);
+	    	   
 	      }
 	      System.out.println();
           
-	      
-	      
-	      //**********************RANDOM ASSIGNMENT************************************************
-		  ArrayList <LABEL_ASSIGNMENT> listOfLabelAssignment =new ArrayList<LABEL_ASSIGNMENT>();
-		  LABEL_ASSIGNMENT element ; 
-  	      ArrayList<Integer> numberOfLabelIndex= new ArrayList<Integer>(); 
-	  	  ArrayList<LABEL> storeOfLabel= new ArrayList<LABEL>(); 
-	  	  ArrayList<Integer> numberOfUserIndex=new ArrayList<Integer>(); 
-
-	      int sizeOfLabels=listOfLabel.size();
-	      int numberOfUser=0;
-	      int numberOfLabels=0;
-	      int currentLabel=0;
-	      int currentUser=0;
-	      int controlIn=0;
-	      int k=0; int i=0; int j=0;
-	      for(i=0; i<listOfInstance.size(); i++) {
-	  	  storeOfLabel= new ArrayList<LABEL>(); 
-	  	      //Random value of max users
-    	      numberOfUser= (int) (Math.random()* lengthUser)+1;
-
-	    	  	  
-	    	  
-	    	  j=0;
-	    	  currentUser=0;
-	    	  while(j<numberOfUser) {
-	    		controlIn=0;
-	    		//The random value shows which label on the instance.
-	    	    currentUser=(int) (Math.random()*(lengthUser));  
-	    	    
-	    	    //Check the label whether it exists.
-	    	    if(numberOfUserIndex.size()!=0) {
-	    	    	if(!numberOfUserIndex.contains(currentUser)) {
-	    	    		numberOfUserIndex.add(currentUser);
-	    	    		j++;
-	    	    		controlIn=1;
-	    	    	}
-				   }
-	    	    else {
-    	    		numberOfUserIndex.add(currentUser);
-    	    		j++;
-    	    		controlIn=1;
-	    	    }	
-	    	    
-	    	    if(controlIn==1) {
-	    	           k=0;
-	   	    	  currentLabel=0;
-			   //The random value shows how many labels for current instance
-	    	          numberOfLabels = (int) (Math.random()* maxLabel)+1;	    
-	   	    	  while(k<numberOfLabels) {
-	   	    		//The random value shows which label on the instance.
-	   	    	    currentLabel=(int) (Math.random()*sizeOfLabels);  
-	   	    	    //System.out.println(currentLabel);
-	   	    	    //Check the label whether it exists.
-	   	    	    if(numberOfLabelIndex.size()!=0) {
-	   	    	    	if(!numberOfLabelIndex.contains(currentLabel+1)) {
-	   	    	    		numberOfLabelIndex.add(currentLabel+1);
-	   	    	    		storeOfLabel.add(listOfLabel.get(currentLabel));
-	   	    	    		k++;
-	   	    	    	}
-	   				   }
-	   	    	    else {
-	       	    		numberOfLabelIndex.add(currentLabel+1);
-	       	    		storeOfLabel.add(listOfLabel.get(currentLabel));
-	       	    		k++;
-	   	    	    }	            
-	   	    	  } 
-	    
-	   	    	  element=new LABEL_ASSIGNMENT(listOfUser.get(currentUser).getUserId(),listOfInstance.get(i).getInstanceid(),storeOfLabel);
-	   	          listOfLabelAssignment.add(element);
-	   	          //print actions
-	   	          element.sortLabels();
-	   	          element.print(logger);
-	   	     	  
-                  storeOfLabel= new ArrayList<LABEL>(); 
-	   	          numberOfLabelIndex.clear();
-	    	    }
-	    	  }
-	    	  numberOfUserIndex.clear();
-	      }
+	        //**********************RANDOM ASSIGNMENT************************************************
+	      ArrayList<USER>currentusers=new ArrayList<USER>();
+	      int i=0;
+	    	 int rand=(int)((Math.random())*(listOfUser.size()));
+	    	
+	         USER cuser1=listOfUser.get(rand);
+	         currentusers.add(cuser1) ;
+	    while(true) {
+	   	 int random=(int)(Math.random()*(listOfUser.size()));
+	     USER cuser=listOfUser.get(random);
+	     if(find(currentusers,cuser)) {
+	    	 continue;
+	     }
+	     else {
+	   	  currentusers.add(cuser) ;
+	     }
+	if(currentusers.size()==nuser) {
+		break;
+	}}
+	 for(int l=0;l<currentusers.size();l++)  	{
+	int  random=(int)(Math.random()*(listOfInstance.size()));
+	int random1=(int)(Math.random()*(listOfLabel.size()));
+	System.out.println(random+" ndndndnd");
+	LABEL_ASSIGNMENT one=new LABEL_ASSIGNMENT(currentusers.get(l).getUserId(),listOfInstance.get(random).getInstanceid(),listOfLabel.get(random1));
+	 System.out.println(one.getUserId()+" "+one.getInstanceId()+" "+one.getLabels().getText()+" "+one.getDatetime());
+	(currentusers.get(l)).addInstance((listOfInstance.get(random)));
+	 }
+	  i=0;
+	 while(i<150) {
+		    int randomuser=(int)(Math.random()*(currentusers.size()));
+		     USER currentu=currentusers.get(randomuser);
+		     int checkprob=(int)(Math.random()*(100));
+		     if(checkprob<currentu.getConsistencyCheckProbability()*100) {
+		    	 int  random=(int)(Math.random()*(currentu.getLabeled().size()));
+		    	
+		 		int random1=(int)(Math.random()*(listOfLabel.size()));
+		 	
+		 		LABEL_ASSIGNMENT two=new LABEL_ASSIGNMENT(currentu.getUserId(),currentu.getLabeled().get(random).getInstanceid(),listOfLabel.get(random1));
+		 		 System.out.println(two.getUserId()+" "+two.getInstanceId()+" "+two.getLabels().getText()+" "+two.getDatetime());
+		 		
+		    	 
+		     }
+		     else {
+		
+			
+			int random1=(int)(Math.random()*(listOfLabel.size()));
+			LABEL currentlabel=listOfLabel.get(random1);
+			while(true) {
+			
+				int  random=(int)(Math.random()*(listOfInstance.size()));
+				INSTANCE cınstance=listOfInstance.get(random);
+			 if(currentu.getLabeled().contains(cınstance)) {
+				 if(currentu.getLabeled().size()==listOfInstance.size()){
+			    	break;
+			     } 
+				
+				 continue;}
+			     else {
+			    	 LABEL_ASSIGNMENT two=new LABEL_ASSIGNMENT(currentu.getUserId(),cınstance.getInstanceid(),currentlabel);
+			 		 System.out.println(two.getUserId()+" "+two.getInstanceId()+" "+two.getLabels().getText()+" "+two.getDatetime());
+			 		 currentu.getLabeled().add(cınstance);
+			   break;  }
+			
+				
+			
+		
+		     }
+			
+		     }
+		     System.out.println(i);i++;}
+	 
+	   
+	  
+	   /*	 
 	     
 	     Gson gson=new Gson();
 	     String json2="";
@@ -222,7 +217,7 @@ public class TEST {
 	    	     file.write(json2+",\n");
 	         }*/
 	         
-	       file.write(gson.toJson(listOfInstance));
+	     /*  file.write(gson.toJson(listOfInstance));
 	         file.write("],\n");
 	         
 	         file.write("\"class label assignments\":[\n");
@@ -252,10 +247,9 @@ public class TEST {
 	      } catch (IOException e) {
 	         // TODO Auto-generated catch block
 	         e.printStackTrace();
-	      }
-	      //System.out.println();
-	     // System.out.println("JSON file created: "+json2);
-	   }
+	      }*/
+	    
+}
 	   
 
 	   
@@ -267,7 +261,23 @@ public static void createDatasets(JSONArray jsonArraydataset,ArrayList<DATASET>d
 	JSONObject dataset= (JSONObject)jsonParser.parse(new FileReader(a.get("filepath").toString()));
     JSONArray jsonArray = (JSONArray)(dataset.get("class labels"));
     JSONArray jsonArray1 = (JSONArray)(dataset.get("instances"));
-    DATASET a1=new DATASET((long)dataset.get("dataset id"),(long)dataset.get("maximum number of labels per instance"),(String)dataset.get("dataset name"),jsonArray,jsonArray1);
+
+    DATASET a1=new DATASET((long)dataset.get("dataset id"),(long)dataset.get("maximum number of labels per instance"),(String)dataset.get("dataset name"),jsonArray,jsonArray1,(Long)a.get("numberofuser"));
     datasets.add(a1);
 	}
-}}
+}
+public static boolean find(ArrayList<USER>array,USER user) {
+if(array.contains(user)) {
+	return true;
+}
+else {
+	return false;
+}
+}
+
+
+
+	
+}
+	   
+
