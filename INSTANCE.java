@@ -63,13 +63,14 @@ public class INSTANCE {
   	}
   	// calculating percentage of each labels into percentageOfLabel array
   	public void percentageOfLabels() {
+  		if(this.totalNumberOfLabelAssignment!=0) {
   		Integer numberOfLabelled;
   		for(int i=0; i<this.percentageOfLabel.size() ; i++) {
   			numberOfLabelled = this.countOfLabel.get(i);
   	  		Integer percentage = (numberOfLabelled*100) / this.totalNumberOfLabelAssignment;
   	  		this.percentageOfLabel.set(i, percentage);
-  		}
-  		 		
+  		}	
+  		}	 		
   	}	
   	
   	//finding Max Frequent Label
@@ -201,4 +202,3 @@ public class INSTANCE {
 	}
 */
 }
-
