@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class LABEL_ASSIGNMENT {
       private long instanceId;
 	  private long  userId;
-      private ArrayList<LABEL> labels=new ArrayList<>();
+      private LABEL labels;
       private String datetime ;
       
 	public LABEL_ASSIGNMENT() {
@@ -21,7 +21,7 @@ public class LABEL_ASSIGNMENT {
 
 		// TODO Auto-generated constructor stub
 	
-	public LABEL_ASSIGNMENT (long userId, long inst,ArrayList<LABEL> labels) {
+	public LABEL_ASSIGNMENT (long userId, long inst,LABEL labels) {
 		this.setUserId(userId);
 		this.setInstanceId(inst);
 		this.setLabels(labels);
@@ -31,8 +31,8 @@ public class LABEL_ASSIGNMENT {
 	    this.datetime = stringDate;
 	}
 	
-      //Sort Labels
-	  public void sortLabels() {
+    /*  //Sort Labels
+  public void sortLabels() {
 		   int l=0; int m=0; LABEL temp;
 		   for(l=0;l<this.getLabels().size();l++) {
 	    		for(m=0; m <this.getLabels().size();m++) {
@@ -44,9 +44,9 @@ public class LABEL_ASSIGNMENT {
 	    		}    		
 	    	  }
 	   }
-	
+	*/
 	 //Prints actions
-	  public void print(Logger logger) {
+	 /* public void print(Logger logger) {
 		   String message="";
 		   message="instance id:" + this.instanceId + ", class labels ids:[" ;
 		      
@@ -62,7 +62,7 @@ public class LABEL_ASSIGNMENT {
 	          message+=" user:" +this.userId+",";
 	          message+=" datetime:" +this.getDatetime()+" is created.";
 	          logger.info(message);
-	   }
+	   }*/
 	
 
 	public String getDatetime() {
@@ -74,14 +74,7 @@ public class LABEL_ASSIGNMENT {
 	}
 
 	
-	public ArrayList<LABEL> getLabels() {
-		return labels;
-	}
 
-
-	public void setLabels(ArrayList<LABEL> labels) {
-		this.labels = labels;
-	}
 
 
 	public long getUserId() {
@@ -101,6 +94,18 @@ public class LABEL_ASSIGNMENT {
 
 	public void setInstanceId(long instanceId) {
 		this.instanceId = instanceId;
+	}
+
+
+
+	public LABEL getLabels() {
+		return labels;
+	}
+
+
+
+	public void setLabels(LABEL labels) {
+		this.labels = labels;
 	}
 	
 }
