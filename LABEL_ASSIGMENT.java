@@ -73,6 +73,9 @@ public class LABEL_ASSIGNMENT {
 		this.datetime = datetime;
 	}
 
+	
+
+
 
 	public long getUserId() {
 		return userId;
