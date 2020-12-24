@@ -219,7 +219,7 @@ public class INSTANCE {
 	/*public void createLabelListFor( Integer numberOfLabel ){
 		for(int i=0; i< numberOfLabel;i++)
 		countOfLabel.add(0);
-		
+	
 	}
 */
 }
