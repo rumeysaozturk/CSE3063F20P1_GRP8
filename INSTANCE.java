@@ -130,6 +130,15 @@ public class INSTANCE {
    public void addLabel(LABEL label) {
 	   this.labelInInstance.add(label);
    }
+   //find instances according to their ids
+	public int find(ArrayList<INSTANCE>listofinstance,long instanceid) {
+		for(int c=0;c<listofinstance.size();c++) {
+			if(instanceid==listofinstance.get(c).id) {
+				return c;
+			}
+		}
+		return -1;
+	}
   	//////////////////////////////////////////////////////////// GETTERS & SETTERS
    
 	public ArrayList<USER> getUniqueUsers() {
@@ -207,10 +216,5 @@ public class INSTANCE {
 	}
     
 	
-	/*public void createLabelListFor( Integer numberOfLabel ){
-		for(int i=0; i< numberOfLabel;i++)
-		countOfLabel.add(0);
-		
-	}
-*/
+	
 }
