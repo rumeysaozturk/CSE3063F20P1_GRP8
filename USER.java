@@ -1,4 +1,5 @@
 import java.io.IOException;
+
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -34,8 +35,63 @@ public class USER {
 	public void printUser(Logger logger) {
 		logger.info("user id: "+this.getUserId()+ " username: "+this.getName()+" user type: "+ this.getUsertype()+"user ConsistencyCheckProbability :" +this.getConsistencyCheckProbability()+ " is created.");
 	}
+	
+	public  boolean find(ArrayList<USER>array,USER user) {
+		   if(array.contains(user)) {
+			   return true;
+		   }
+		   else {
+			   return false;
+		   }
+	}
 
+	public void addInstance(INSTANCE x) {
+		this.labeled.add(x);
+	}
+	
+	
+	public boolean 	existbefore(LABEL_ASSIGNMENT two) {
+		for(int c=0;c<this.getLabeled2().size();c++) {
+			if(this.getLabeled2().get(c).getInstanceId()==two.getInstanceId()&&this.getLabeled2().get(c).getLabels().equals(two.getLabels())) {
+			
+				return true;
+			}
+	
+		}
+		return false;
 
+	}
+	
+	public long average() {
+		if(this.totalNumberofInstance==0) {
+			return 0;
+		}else {
+			long sum=0;
+			for(int i=0;i<this.time.size();i++) {
+				sum=time.get(i);
+			}
+			return sum/this.totalNumberofInstance;
+		}
+	}
+
+	public double stdeviation() {
+		if(this.totalNumberofInstance==0 || this.totalNumberofInstance==1) {
+			return 0;
+		}
+		
+		else {
+			long mean =this.average();
+			double sum=0;
+			for(int i=0;i<this.time.size();i++) {
+				sum=Math.pow((time.get(i)-mean), 2);
+			}
+			double std=Math.sqrt((sum/(this.totalNumberofInstance-1)));
+			return std;}
+	}
+	
+	//////////////////////////////////////////////////////////// GETTERS & SETTERS
+	   
+	
 	public long getUserId() {
 		return userId;
 	}
@@ -67,10 +123,7 @@ public class USER {
 	public void setLabeled(ArrayList<INSTANCE> labeled) {
 		this.labeled = labeled;
 	}
-	public void addInstance(INSTANCE x) {
-		this.labeled.add(x);
-	}
-	
+
 
 	public Double getConsistencyCheckProbability() {
 		return ConsistencyCheckProbability;
@@ -89,20 +142,6 @@ public class USER {
 	public void setLabeled2(LABEL_ASSIGNMENT labeled2) {
 		this.labeled2.add(labeled2);
 	}
-	
-	public boolean 	existbefore(LABEL_ASSIGNMENT two) {
-	for(int c=0;c<this.getLabeled2().size();c++) {
-		if(this.getLabeled2().get(c).getInstanceId()==two.getInstanceId()&&this.getLabeled2().get(c).getLabels().equals(two.getLabels())) {
-			System.out.println("berra");
-			
-			return true;
-		}
-	
-	}
-	return false;
-
-}
-
 
 
 	public ArrayList<Long> getTime() {
@@ -113,103 +152,78 @@ public class USER {
 		this.time.add(time);
 	}
 	
-public long average() {
-	if(this.totalNumberofInstance==0) {
-		return 0;
-	}else {
-		long sum=0;
-	for(int i=0;i<this.time.size();i++) {
-		sum=time.get(i);
-	}
-return sum/this.totalNumberofInstance;
-	}
-}
 
-public double stdeviation() {
-	if(this.totalNumberofInstance==0 || this.totalNumberofInstance==1) {
-		return 0;
-	}
-	else {
-	long mean =this.average();
-	double sum=0;
-	for(int i=0;i<this.time.size();i++) {
-		sum=Math.pow((time.get(i)-mean), 2);
-	}
-	double std=Math.sqrt((sum/(this.totalNumberofInstance-1)));
-	return std;}
-}
 
-public Long getCheckconsistency() {
-	return checkconsistency;
-}
-
-public void setCheckconsistency(Long checkconsistency) {
-	if(checkconsistency==-1) {
-		this.checkconsistency++;
-	}else {
-	this.checkconsistency = checkconsistency;
-}
+	public Long getCheckconsistency() {
+		return checkconsistency;
 	}
 
-public Long getTotalNumberofınstance() {
-	return totalNumberofInstance;
-}
-
-public void setTotalNumberofınstance(Long totalNumberofInstance) {
-	if(totalNumberofInstance==-1) {
-		this.totalNumberofInstance++;
-	}
-	else {
-	this.totalNumberofInstance = totalNumberofInstance;
-    }
+	public void setCheckconsistency(Long checkconsistency) {
+		if(checkconsistency==-1) {
+			this.checkconsistency++;
+		}else {
+			this.checkconsistency = checkconsistency;
+		}
 	}
 
-public Long getNumofuniqueins() {
-	return Numofuniqueins;
-}
-
-public void setNumofuniqueins(Long numofuniqueins) {
-	if(numofuniqueins==-1) {
-		this.Numofuniqueins++;
+	public Long getTotalNumberofınstance() {
+		return totalNumberofInstance;
+	
 	}
-	else {
-	this.Numofuniqueins=numofuniqueins;
-    }
-}
 
-public double getConsistency() {
-	return consistency;
-}
+	public void setTotalNumberofınstance(Long totalNumberofInstance,Logger logger) {
+		if(totalNumberofInstance==-1) {
+			this.totalNumberofInstance++;
+		}
+		else {
+			this.totalNumberofInstance = totalNumberofInstance;
+		}
+		logger.info("user id: " +this.userId + " number of total instance is calculated");
+	}
 
-public void setConsistency() {
-	if(this.totalNumberofInstance==0) {
-		this.consistency=0.0;
-	}else {
-	this.consistency=((double)this.checkconsistency/this.totalNumberofInstance)*100;
-}}
+	public Long getNumofuniqueins() {
+		return Numofuniqueins;
+	}
 
-public ArrayList<DATASET> getDataset() {
-	return dataset;
-}
+	public void setNumofuniqueins(Long numofuniqueins,Logger logger) {
+		if(numofuniqueins==-1) {
+			this.Numofuniqueins++;
+		}
+		else {
+			this.Numofuniqueins=numofuniqueins;
+		}
+		
+		logger.info("user id: " + this.userId + " number of unique instance is calculated");
+	}
 
-public void setDataset(ArrayList<DATASET> dataset) {
-	this.dataset = dataset;
-}
+	public double getConsistency() {
+		return consistency;
+	}
 
-public double getAverage() {
-	return average;
-}
+	public void setConsistency() {
+		if(this.totalNumberofInstance==0) {
+			this.consistency=0.0;
+		}else {
+			this.consistency=((double)this.checkconsistency/this.totalNumberofInstance)*100;
+		}
+	}
 
-public void setAverage(double average) {
-	this.average = average;
-}
+	public ArrayList<DATASET> getDataset() {
+		return dataset;
+	}
 
-public  boolean find(ArrayList<USER>array,USER user) {
-	   if(array.contains(user)) {
-		   return true;
-	   }
-	   else {
-		   return false;
-	   }
-}
-}
+	public void setDataset(ArrayList<DATASET> dataset) {
+		this.dataset = dataset;
+	}
+
+	public double getAverage() {
+
+		return average;
+	}
+
+	public void setAverage(double average) {
+		this.average = average;
+	}
+
+
+}//class
