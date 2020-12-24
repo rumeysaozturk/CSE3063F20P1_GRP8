@@ -9,7 +9,12 @@ public class USER {
       private String name;
       private String usertype;
       private Double ConsistencyCheckProbability;
+      private Long totalNumberofınstance=(long)0;
       private ArrayList<INSTANCE>labeled=new ArrayList<INSTANCE>();
+      private ArrayList<LABEL_ASSIGNMENT>labeled2=new ArrayList<LABEL_ASSIGNMENT>();
+      private Long checkconsistency=(long)0;
+      private ArrayList<Long>time=new ArrayList<Long>();
+      
 	public USER() {
 		// TODO Auto-generated constructor stub
 	}
@@ -71,4 +76,77 @@ public class USER {
 		ConsistencyCheckProbability = consistencyCheckProbability;
 	}
 
+	
+
+	public ArrayList<LABEL_ASSIGNMENT> getLabeled2() {
+		return labeled2;
+	}
+
+	public void setLabeled2(LABEL_ASSIGNMENT labeled2) {
+		this.labeled2.add(labeled2);
+	}
+	
+	public boolean 	existbefore(LABEL_ASSIGNMENT two) {
+	for(int c=0;c<this.getLabeled2().size();c++) {
+		if(this.getLabeled2().get(c).getInstanceId()==two.getInstanceId()&&this.getLabeled2().get(c).getLabels().equals(two.getLabels())) {
+			System.out.println("berra");
+			
+			return true;
+		}
+	
+	}
+	return false;
+
+}
+
+
+
+	public ArrayList<Long> getTime() {
+		return time;
+	}
+
+	public void setTime(Long  time) {
+		this.time.add(time);
+	}
+	
+public long average() {
+	long sum=0;
+	for(int i=0;i<this.time.size();i++) {
+		sum=time.get(i);
+	}
+return sum/this.totalNumberofınstance;
+	
+}
+
+public double stdeviation() {
+	long mean =average();
+	double sum=0;
+	for(int i=0;i<this.time.size();i++) {
+		sum=Math.pow((time.get(i)-mean), 2);
+	}
+	double std=Math.sqrt((sum/(this.totalNumberofınstance-1)));
+	return std;
+}
+
+public Long getCheckconsistency() {
+	return checkconsistency;
+}
+
+public void setCheckconsistency(Long checkconsistency) {
+	if(checkconsistency==0) {
+		this.checkconsistency++;
+	}else {
+	this.checkconsistency = checkconsistency;
+}}
+
+public Long getTotalNumberofınstance() {
+	return totalNumberofınstance;
+}
+
+public void setTotalNumberofınstance(Long totalNumberofınstance) {
+	if(totalNumberofınstance==0) {
+		this.totalNumberofınstance++;
+	}else {
+	this.totalNumberofınstance = totalNumberofınstance;
+}}
 }
