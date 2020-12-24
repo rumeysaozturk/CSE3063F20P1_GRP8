@@ -137,16 +137,21 @@ public void setCheckconsistency(Long checkconsistency) {
 		this.checkconsistency++;
 	}else {
 	this.checkconsistency = checkconsistency;
-}}
+}
+	}
 
 public Long getTotalNumberofınstance() {
 	return totalNumberofınstance;
 }
 
 public void setTotalNumberofınstance(Long totalNumberofınstance) {
-	if(totalNumberofınstance==0) {
+	if(totalNumberofınstance==-1) {
 		this.totalNumberofınstance++;
-	}else {
+	}
+	else {
 	this.totalNumberofınstance = totalNumberofınstance;
-}}
+    }
+	}
+	
+	
 }
