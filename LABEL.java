@@ -1,4 +1,3 @@
-
 public class LABEL {
       private long labelid;
       private String text;
