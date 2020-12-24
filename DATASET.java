@@ -7,7 +7,7 @@ public class DATASET {
   private Long max_label;
   private String name;
   private  JSONArray labels;
-  private JSONArray ınstances;
+  private JSONArray instances;
   private Long numofuser;
 	public DATASET() {
 		// TODO Auto-generated constructor stub
@@ -35,10 +35,10 @@ public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Ins
 		this.labels = labels;
 	}
 	public JSONArray getInstances() {
-		return ınstances;
+		return instances;
 	}
-	public void setInstances(JSONArray ınstance) {
-		this.ınstances = ınstance;
+	public void setInstances(JSONArray instance) {
+		this.instances = instance;
 	}
 	public long getMax_label() {
 		return max_label;
@@ -63,4 +63,3 @@ public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Ins
 	
 	
 }
-
