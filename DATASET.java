@@ -9,6 +9,7 @@ public class DATASET {
   private  JSONArray labels;
   private JSONArray instances;
   private Long numofuser;
+  private double completeness;
 	public DATASET() {
 		// TODO Auto-generated constructor stub
 	}
@@ -20,6 +21,7 @@ public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Ins
 	setInstances(Instance);
 	setNumofuser(numberofuser);
 }
+
 	
 	public String getName() {
 		return name;
@@ -57,6 +59,12 @@ public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Ins
 	}
 	public void setNumofuser(Long numofuser) {
 		this.numofuser = numofuser;
+	}
+	public double getCompleteness() {
+		return completeness;
+	}
+	public void setCompleteness(double completeness) {
+		this.completeness = completeness;
 	}
 
 
