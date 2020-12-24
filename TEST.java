@@ -155,6 +155,20 @@ public class TEST {
 	    	  listOfInstance.get(i).setCountOfLabel(countOfLabelPrevious);
 	    	  
 	      } 
+	      //UNIQUE ARRAY 
+	      JSONArray uniqueArray = (JSONArray)(jsonRead.get("UniqueArray"));
+	      for (int i=0;i<uniqueArray.size();i++) {
+	    	  JSONArray object=(JSONArray)uniqueArray.get(i);
+	    	  for(int j=0; j<object.size(); j++) {
+	    		  convert=String.valueOf(object.get(j));
+	    		   for(int k=0; k<listOfUser.size(); k++) {
+	    		   if(listOfUser.get(k).getUserId()==(long)Integer.valueOf(convert));
+	    		   listOfInstance.get(i).checkUniqueUsers(listOfUser.get(k));
+	    	       }    		  
+	    	  } 
+	      } 
+	      
+	      
 	      //TOTAL LABEL ASSIGNMENT READ
 	      JSONArray totalArray = (JSONArray)(jsonRead.get("TotalNumberOfAssignment"));
 	      for (int i=0;i<totalArray.size();i++) {
