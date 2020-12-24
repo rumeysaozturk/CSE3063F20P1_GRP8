@@ -5,13 +5,52 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.google.gson.Gson;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 public class PRINT {
 
 	public PRINT(){		
 	}
-
 	
-	//BACK UP THE PREVIOUS DATASET INFORMATIONS 
+	//**********************PRINT INSTANCE METRICS
+    public void printInstanceMetrics(ArrayList <INSTANCE> instance,ArrayList <LABEL> listOfLabel,Long datasetId,Logger logger) {
+	     
+       	int i=0; int j=0;
+    
+	      try {
+	         FileWriter file = new FileWriter("instanceMetricsForDataset"+datasetId+".json");
+	         file.write("{\n");
+	         file.write("Dataset id :"+1+"\n");
+	         file.write("\"instances\":[");
+	         for(i=0; i<instance.size(); i++){
+	        	 file.write("\n{Instance id :"+ instance.get(i).getInstanceid()+" Total Number Of Label Assignment :" + instance.get(i).getTotalNumberOfLabelAssignment()
+	        			 +", \"Number of unique label assignments\":" + instance.get(i).calculateTotalNumberOfUniqueLabel()+", \"Number of unique users\":"+instance.get(i).getUniqueUsers().size()
+	        			 +", \"Most frequent class label and percentage\":[\""+instance.get(i).findMaxFrequentLabel(listOfLabel).getText()+"\",\"%"+instance.get(i).percentageOfMaxLabel()+"]"
+	        			 +", \"List class labels and percentages\":[");
+	        	 for(j=0; j<listOfLabel.size(); j++) {
+	        	 file.write("[\""+listOfLabel.get(j).getText()+"\",\"%"+instance.get(i).getPercentageOfLabel().get(j)+"]");
+	        	 if(j!=listOfLabel.size()-1) {
+	        	 file.write(",");
+	        	 }
+	        	 }
+	        	 file.write("], \"Entropy\":"+instance.get(i).entropy()+"}");
+	        	 if(i!=instance.size()-1) {
+	        		 file.write(",");
+	        	 }
+	         }
+             file.flush();
+	         file.close();
+	         //logger.info("Instance metrics is written sucesfully.");
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      }
+
+    }
+
+	//*****************BACK UP THE PREVIOUS DATASET INFORMATIONS 
 	public void backup(ArrayList<INSTANCE> instance,Long datasetId) {
 		JSONObject jsonObject = new JSONObject();
 	    jsonObject.put("dataset id", 1);
@@ -48,7 +87,7 @@ public class PRINT {
 		jsonObject.put("TotalNumberOfAssignment", totalArray);
 		
 		try {
-	        FileWriter file = new FileWriter("Secret/"+datasetId+".json");
+	        FileWriter file = new FileWriter("Secret/"+datasetId+"instancemetrics.json");
 	        file.write(jsonObject.toJSONString());
 	        file.close();
 	     } catch (IOException e) {
@@ -57,5 +96,4 @@ public class PRINT {
 	     }
 	     System.out.println("JSON file created: "+jsonObject);
 	}
-
 }
