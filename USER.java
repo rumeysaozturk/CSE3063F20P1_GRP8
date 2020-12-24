@@ -9,13 +9,14 @@ public class USER {
       private String name;
       private String usertype;
       private Double ConsistencyCheckProbability;
-      private Long totalNumberofýnstance=(long)0;
+      private Long totalNumberofInstance=(long)0;
       private ArrayList<INSTANCE>labeled=new ArrayList<INSTANCE>();
       private ArrayList<LABEL_ASSIGNMENT>labeled2=new ArrayList<LABEL_ASSIGNMENT>();
       private Long checkconsistency=(long)0;
       private ArrayList<Long>time=new ArrayList<Long>();
       private Long Numofuniqueins=(long)0;
       private double consistency=0.0;
+      private double average;
       private ArrayList<DATASET>dataset=new ArrayList<DATASET>();
       
 	public USER() {
@@ -113,27 +114,28 @@ public class USER {
 	}
 	
 public long average() {
-	if(this.totalNumberofýnstance==0) {
+	if(this.totalNumberofInstance==0) {
 		return 0;
 	}else {
 		long sum=0;
 	for(int i=0;i<this.time.size();i++) {
 		sum=time.get(i);
 	}
-return sum/this.totalNumberofýnstance;
+return sum/this.totalNumberofInstance;
 	}
 }
 
 public double stdeviation() {
-	if(this.totalNumberofýnstance==0) {
+	if(this.totalNumberofInstance==0 || this.totalNumberofInstance==1) {
 		return 0;
-	}else {
+	}
+	else {
 	long mean =this.average();
 	double sum=0;
 	for(int i=0;i<this.time.size();i++) {
 		sum=Math.pow((time.get(i)-mean), 2);
 	}
-	double std=Math.sqrt((sum/(this.totalNumberofýnstance-1)));
+	double std=Math.sqrt((sum/(this.totalNumberofInstance-1)));
 	return std;}
 }
 
@@ -149,16 +151,16 @@ public void setCheckconsistency(Long checkconsistency) {
 }
 	}
 
-public Long getTotalNumberofýnstance() {
-	return totalNumberofýnstance;
+public Long getTotalNumberofınstance() {
+	return totalNumberofInstance;
 }
 
-public void setTotalNumberofýnstance(Long totalNumberofýnstance) {
-	if(totalNumberofýnstance==-1) {
-		this.totalNumberofýnstance++;
+public void setTotalNumberofınstance(Long totalNumberofInstance) {
+	if(totalNumberofInstance==-1) {
+		this.totalNumberofInstance++;
 	}
 	else {
-	this.totalNumberofýnstance = totalNumberofýnstance;
+	this.totalNumberofInstance = totalNumberofInstance;
     }
 	}
 
@@ -180,10 +182,10 @@ public double getConsistency() {
 }
 
 public void setConsistency() {
-	if(this.totalNumberofýnstance==0) {
+	if(this.totalNumberofInstance==0) {
 		this.consistency=0.0;
 	}else {
-	this.consistency=((double)this.checkconsistency/this.totalNumberofýnstance)*100;
+	this.consistency=((double)this.checkconsistency/this.totalNumberofInstance)*100;
 }}
 
 public ArrayList<DATASET> getDataset() {
@@ -192,5 +194,22 @@ public ArrayList<DATASET> getDataset() {
 
 public void setDataset(ArrayList<DATASET> dataset) {
 	this.dataset = dataset;
+}
+
+public double getAverage() {
+	return average;
+}
+
+public void setAverage(double average) {
+	this.average = average;
+}
+
+public  boolean find(ArrayList<USER>array,USER user) {
+	   if(array.contains(user)) {
+		   return true;
+	   }
+	   else {
+		   return false;
+	   }
 }
 }
