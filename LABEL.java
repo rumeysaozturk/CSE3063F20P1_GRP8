@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class LABEL {
       private long labelid;
       private String text;
@@ -20,5 +22,13 @@ public long getLabelid() {
 }
 public void setLabelid(long labelid) {
 	this.labelid = labelid;
+}
+public int find(ArrayList<LABEL>listoflabel,long labelid) {
+	for(int c=0;c<listoflabel.size();c++) {
+		if(labelid==listoflabel.get(c).labelid) {
+			return c;
+		}
+	}
+	return -1;
 }
 }
