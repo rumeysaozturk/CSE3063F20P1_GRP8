@@ -44,75 +44,46 @@ public class TEST {
 		  ArrayList<LABEL>listOfLabel=new ArrayList<>();
 		  ArrayList<INSTANCE>listOfInstance=new ArrayList<>();
 	      JSONParser jsonParser = new JSONParser();
-	     
+	      //READ INPUT FILE
 	      JSONObject jsonUser = (JSONObject) jsonParser.parse(new FileReader("configuration.json"));
-	   
+	      //READ DATASET
 	      JSONArray jsonArraydataset = (JSONArray)(jsonUser.get("datasets"));
+	      //DATASET ARRAYLIST
 	      ArrayList<DATASET>dataset1=new ArrayList<>();
+	      //SINGLETON
 	      Singleton temp=Singleton.getInstance();
 	      temp.createDatasets(jsonArraydataset, dataset1);
-	    
-	    
-	      //Parsing the contents of the JSON file
-	      //Forming URL
+
 	      //Read from file
 	      //CurrentDatasetId determined  which dataset will run.
 	      DATASET current=dataset1.get(((Integer.valueOf(String.valueOf(jsonUser.get("current dataset id"))))-1));
-	         logger.info("Input file is read succesfully.\n");
-	         logger.info("Dataset id: "+ current.getId()+ " is created");
-	         logger.info("Dataset name: "+current.getName()+ " is created");
-	         logger.info("maximum number of labels per instance: "+current.getMax_label()+ " is created\n");
-                   
-	         
+     
 	         //Take number of users in the dataset
 	         Long nuser=current.getNumofuser();
 	  
 	         //Retrieving the array
 	         JSONArray jsonArray = current.getLabels();
-	         
-	        
-	         //Iterating the contents of the array
-	      
-	        
-	         JSONArray jsonArray1 =current.getInstances();
-	       
-	        
-	         //Iterating the contents of the array
-	    
+
+	         JSONArray jsonArrayInstance =current.getInstances();
+	           
 	         JSONArray jsonArrayUser = (JSONArray)(jsonUser.get("users"));
-	     
-	      
-	      for (int i=0;i<jsonArray.size();i++) {
-	    	  JSONObject jsonArrayObject=(JSONObject) jsonArray.get(i);
-		        LABEL label1=new LABEL((long) jsonArrayObject.get("label id"),(String) jsonArrayObject.get("label text"));
-		        listOfLabel.add(label1);
-		        
-	      }
-	          
-	      INSTANCE addInstance;	         
-	      for (int i=0;i<jsonArray1.size();i++) {
-	    	    JSONObject jsonArray1Object=(JSONObject) jsonArray1.get(i);
-	    	    addInstance =new INSTANCE((long) jsonArray1Object.get("id"),(String) jsonArray1Object.get("instance"));
-	    	    addInstance.createListForLabelCount(listOfLabel.size());// creating countOfLabel list and assign 0 to countOfLabel list in the beginning
-	    	    addInstance.createListForLabelPercentage(listOfLabel.size());//// creating percentageOfLabel list and assign 0 to percentageOfLabel list in the beginning
-		        listOfInstance.add(addInstance);
-		        
-	      }    
-	  
-	      
-	      //GENERATE A USER************************************
-		  ArrayList <USER> listOfUser =new ArrayList<USER>();
+             
+	          //USER ARRAYLIST
+			  ArrayList <USER> listOfUser =new ArrayList<USER>();
+			  
+			  //READ INPUTS
+	          Generate generate = new Generate();  
+	          generate.readDataset(logger, current);
+	          generate.readLabel(logger,jsonArray,listOfLabel);
+	          generate.readInstance(logger, jsonArrayInstance,listOfLabel, listOfInstance);
+		      generate.readUser(logger, jsonArrayUser, listOfUser);
+		      //PRINT
+              PRINT print=new PRINT();
+		      
+  
 		 
-	
-	      USER user;
-	      for(int i=0; i<jsonArrayUser.size(); i++) {
-	    	  JSONObject jsonArrayUserObject=(JSONObject) jsonArrayUser.get(i);
-		        user = new USER((long) jsonArrayUserObject.get("user id"),(String) jsonArrayUserObject.get("user name"),(String) jsonArrayUserObject.get("user type"),(double) jsonArrayUserObject.get("ConsistencyCheckProbability"));
-	    	    listOfUser.add(user);
-	    	    user.printUser(logger);
-	    	   
-	      }//*************************************************
-	      File file=new File("usermetrics.json"); 
+          //**********************READ PREVIOUS INFORMATION*************
+	        File file=new File("usermetrics.json"); 
 
 		    for (int t=0;t<dataset1.size();t++) {
 		    	File file1=new File("Secret"+dataset1.get(t).getId()+".json");
@@ -121,12 +92,10 @@ public class TEST {
 		     if(file.length()==0) { 
 		    	 FileWriter file1 = new FileWriter("usermetrics.json");
 		    	
-		 PRINT print=new PRINT();
 		     print.printusermetrics(file1,listOfUser,logger);
-		     
-		       
-		     
-		 	       }else {
+ 
+		 	       }
+		     else {
 	           	
 	        	    
 		     JSONObject jsonUser1 = (JSONObject) jsonParser.parse(new FileReader("usermetrics.json"));
@@ -157,14 +126,13 @@ public class TEST {
 	         	    }
 	         }
 	         }
-		     
-		     
+
 		     File file2=new File("Secret"+current.getId()+".json"); 
 		     if(file2.length()==0) { 
 		       FileWriter file1 = new FileWriter(file2);
 		
 		        }
-		     else {
+		      else {
 	         
 		      	  JSONObject jsonUser1 = (JSONObject) jsonParser.parse(new FileReader(file2));
 		          JSONArray jsonArrayUser1 = (JSONArray)(jsonUser1.get("users"));
@@ -192,9 +160,7 @@ public class TEST {
 
 		             
 		         	    }
-		         	  
-		         	    
-		         	    
+ 		         	    
 		         	    }}
 	 
        
@@ -212,7 +178,7 @@ public class TEST {
 	      
 	      //-------------------------------------------------------------READING PREVIOUS VALUE---------------------------------
 	      
-	      PRINT print=new PRINT();
+
 	      USER bos=new USER();
 	      
 		     //**********Find the dataset whether it exists previous iteration*******************   
@@ -504,11 +470,24 @@ public class TEST {
 		    //Finish the timer
 		    endTime = System.nanoTime();
 		    currentu.setTime(endTime - startTime);
-		  
+		    //i++;
 		     
 		     }
-	
-	   }//main
 	 
+	  		
+	    
+	   }//main
+	   
+
+	   
+	   
+	   
+	   
+
+
+
+
+
+
 }//class
 	   
