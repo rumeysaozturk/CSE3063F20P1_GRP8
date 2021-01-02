@@ -18,7 +18,7 @@
         {"user id":8,"user name":"Elif","user type":"HumanUser","ConsistencyCheckProbability":0.1,"password":"1234"}
         {"user id":9,"user name":"Ezgi","user type":"HumanUser","ConsistencyCheckProbability":0.1,"password":"1234"}
         {"user id":11,"user name":"Omer","user type":"HumanUser","ConsistencyCheckProbability":0.1,"password":"1234"}
-	     {"user id":12,"user name":"Rumeysa","user type":"HumanUser","ConsistencyCheckProbability":0.1,"password":"1234"}
-	     {"user id":13,"user name":"Sukriye","user type":"HumanUser","ConsistencyCheckProbability":0.1,"password":"1234"}
+	{"user id":12,"user name":"Rumeysa","user type":"HumanUser","ConsistencyCheckProbability":0.1,"password":"1234"}
+	{"user id":13,"user name":"Sukriye","user type":"HumanUser","ConsistencyCheckProbability":0.1,"password":"1234"}
         ]     
 }
