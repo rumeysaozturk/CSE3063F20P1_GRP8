@@ -5,26 +5,26 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.*;
 
-public class USER {
+public class User implements finder{
       private Long userId;
       private String name;
       private String usertype;
       private Double ConsistencyCheckProbability;
       private Long totalNumberofInstance=(long)0;
-      private ArrayList<INSTANCE>labeled=new ArrayList<INSTANCE>();
-      private ArrayList<LABEL_ASSIGNMENT>labeled2=new ArrayList<LABEL_ASSIGNMENT>();
+      private ArrayList<Instancee>labeled=new ArrayList<Instancee>();
+      private ArrayList<LabelAssignment>labeled2=new ArrayList<LabelAssignment>();
       private Long checkconsistency=(long)0;
       private ArrayList<Long>time=new ArrayList<Long>();
       private Long Numofuniqueins=(long)0;
       private double consistency=0.0;
       private double average;
-      private ArrayList<DATASET>dataset=new ArrayList<DATASET>();
+      private ArrayList<Dataset>dataset=new ArrayList<Dataset>();
       
-	public USER() {
+	public User() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public USER(long userId,String name,String usertype,Double ConsistencyCheckProbability ) {
+	public User(long userId,String name,String usertype,Double ConsistencyCheckProbability ) {
 		this.setUserId(userId);
 		this.setName(name);
 		this.setUsertype(usertype);
@@ -32,11 +32,11 @@ public class USER {
 	}
 	
 	//Print user
-	public void printUser(Logger logger) {
-		logger.info("user id: "+this.getUserId()+ " username: "+this.getName()+" user type: "+ this.getUsertype()+"user ConsistencyCheckProbability :" +this.getConsistencyCheckProbability()+ " is created.");
+public void printUser(Logger logger) {
+		logger.info("user id: "+this.getUserId()+ " username: "+this.getName()+" user type: "+ this.getUsertype()+" user ConsistencyCheckProbability :" +this.getConsistencyCheckProbability()+ " is created.");
 	}
 	
-	public  boolean find(ArrayList<USER>array,USER user) {
+	public  boolean find(ArrayList<User>array,User user) {
 		   if(array.contains(user)) {
 			   return true;
 		   }
@@ -45,14 +45,14 @@ public class USER {
 		   }
 	}
 
-	public void addInstance(INSTANCE x) {
+	public void addInstance(Instancee x) {
 		this.labeled.add(x);
 	}
 	
 	
-	public boolean 	existbefore(LABEL_ASSIGNMENT two) {
+	public boolean 	existbefore(LabelAssignment two) {
 		for(int c=0;c<this.getLabeled2().size();c++) {
-			if(this.getLabeled2().get(c).getInstanceId()==two.getInstanceId()&&this.getLabeled2().get(c).getLabels().equals(two.getLabels())) {
+			if(this.getLabeled2().get(c).getInstance().getInstanceid()==two.getInstance().getInstanceid()&&this.getLabeled2().get(c).getLabels().getLabelid()==two.getLabels().getLabelid()) {
 			
 				return true;
 			}
@@ -89,6 +89,15 @@ public class USER {
 			return std;}
 	}
 	
+	   //find instances according to their ids
+		public int find(ArrayList<User>listOfuser,ArrayList<Label>listlabel,ArrayList<Instancee>listinstance, Long userid) {
+			for(int c=0;c<listOfuser.size();c++) {
+				if(userid==listOfuser.get(c).userId) {
+					return c;
+				}
+			}
+			return -1;
+		}
 	//////////////////////////////////////////////////////////// GETTERS & SETTERS
 	   
 	
@@ -116,11 +125,11 @@ public class USER {
 		this.name = name;
 	}
 
-	public ArrayList<INSTANCE> getLabeled() {
+	public ArrayList<Instancee> getLabeled() {
 		return labeled;
 	}
 
-	public void setLabeled(ArrayList<INSTANCE> labeled) {
+	public void setLabeled(ArrayList<Instancee> labeled) {
 		this.labeled = labeled;
 	}
 
@@ -135,11 +144,11 @@ public class USER {
 
 	
 
-	public ArrayList<LABEL_ASSIGNMENT> getLabeled2() {
+	public ArrayList<LabelAssignment> getLabeled2() {
 		return labeled2;
 	}
 
-	public void setLabeled2(LABEL_ASSIGNMENT labeled2) {
+	public void setLabeled2(LabelAssignment labeled2) {
 		this.labeled2.add(labeled2);
 	}
 
@@ -166,19 +175,19 @@ public class USER {
 		}
 	}
 
-	public Long getTotalNumberofınstance() {
+	public Long getTotalNumberofInstance() {
 		return totalNumberofInstance;
 	
 	}
 
-	public void setTotalNumberofınstance(Long totalNumberofInstance,Logger logger) {
+	public void setTotalNumberofInstance(Long totalNumberofInstance,Logger logger) {
 		if(totalNumberofInstance==-1) {
 			this.totalNumberofInstance++;
 		}
 		else {
 			this.totalNumberofInstance = totalNumberofInstance;
 		}
-		logger.info("user id: " +this.userId + " number of total instance is calculated");
+	//	logger.info("user id: " +this.userId + " number of total instance is calculated");
 	}
 
 	public Long getNumofuniqueins() {
@@ -191,9 +200,8 @@ public class USER {
 		}
 		else {
 			this.Numofuniqueins=numofuniqueins;
-		}
-		
-		logger.info("user id: " + this.userId + " number of unique instance is calculated");
+		}		
+	//	logger.info("user id: " + this.userId + " number of unique instance is calculated");
 	}
 
 	public double getConsistency() {
@@ -208,11 +216,11 @@ public class USER {
 		}
 	}
 
-	public ArrayList<DATASET> getDataset() {
+	public ArrayList<Dataset> getDataset() {
 		return dataset;
 	}
 
-	public void setDataset(ArrayList<DATASET> dataset) {
+	public void setDataset(ArrayList<Dataset> dataset) {
 		this.dataset = dataset;
 	}
 
@@ -225,7 +233,5 @@ public class USER {
 		this.average = average;
 	}
 
-	
-	
 
 }//class
