@@ -1,8 +1,9 @@
 import java.lang.Integer;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import org.json.simple.JSONArray;
-public class DATASET {
+public class Dataset {
   private Long id;
   private Long max_label;
   private String name;
@@ -10,10 +11,10 @@ public class DATASET {
   private JSONArray instances;
   private Long numofuser;
   private double completeness;
-	public DATASET() {
+	public Dataset() {
 		// TODO Auto-generated constructor stub
 	}
-public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Instance,Long numberofuser) {
+public Dataset(long id,long max_label,String name ,JSONArray label,JSONArray Instance,Long numberofuser) {
 	setId(id);
 	setMax_label(max_label);
 	setName(name);
@@ -22,7 +23,30 @@ public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Ins
 	setNumofuser(numberofuser);
 }
 
+
+	public void addDataset(ArrayList<User> currentusers, Dataset current) {
+		 for(int k=0;k<currentusers.size();k++) {
+	        	if(currentusers.get(k).getDataset().contains(current)) {
+	        		continue;
+	        	}else {
+	        		currentusers.get(k).getDataset().add(current);
+	        	}
+	        }
+	}
 	
+public Double classDistribution1(int isLabeled,int labelarrayelement,ArrayList<Instancee>instancee) {
+	return (((double)(labelarrayelement-(instancee.size()-isLabeled))/(double)isLabeled))*100;
+}
+
+public Double classDistribution2(int isLabeled,int labelarrayelement) {
+	return ((double)labelarrayelement/(double)isLabeled)*100;
+}
+	public void readDataset(Logger logger,Dataset current) {
+        logger.info("Input file is read succesfully.\n");
+        logger.info("Dataset id: "+ current.getId()+ " is created");
+        logger.info("Dataset name: "+current.getName()+ " is created");
+        logger.info("maximum number of labels per instance: "+current.getMax_label()+ " is created\n");	
+	}
 	public String getName() {
 		return name;
 	}
@@ -66,5 +90,8 @@ public DATASET(long id,long max_label,String name ,JSONArray label,JSONArray Ins
 	public void setCompleteness(double completeness) {
 		this.completeness = completeness;
 	}
+
+
+	
 	
 }
