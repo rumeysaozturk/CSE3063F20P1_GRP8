@@ -5,23 +5,20 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 
-public class INSTANCE implements finder {
+public class Instancee implements finder {
       private long id;
       private String instance;
-      private ArrayList<LABEL> labelInInstance = new ArrayList<>();// store of all labels for each instance
-      private ArrayList<Integer> countOfLabel = new ArrayList<>();// store of each label counts for each instance
       private Integer totalNumberOfLabelAssignment = 0;
-      private ArrayList<USER> uniqueUsers = new ArrayList<>(); // store of unique users who labeled for each instance
+      private ArrayList<User> uniqueUsers = new ArrayList<>(); // store of unique users who labeled for each instance
+      private ArrayList<Integer> countOfLabel = new ArrayList<>();// store of each label counts for each instance
       private ArrayList<Integer> percentageOfLabel = new ArrayList<>();// store of label percantage for each instance
-     
-      
-      
+      private ArrayList<Integer> countOfLabelforHumanUsers = new ArrayList<>();
 
-	public INSTANCE() {
+	public Instancee() {
   		// TODO Auto-generated constructor stub
   	}
   	
-  	public INSTANCE(long id,String text ) {
+  	public Instancee(long id,String text ) {
   		this.setInstanceid(id);
   		this.instance=text;
   		
@@ -46,16 +43,11 @@ public class INSTANCE implements finder {
   		}
   		
   		}
-  		logger.info("instance id: "+this.getInstanceid()+ " entropy is calculated : "+result);
+  		//logger.info("instance id: "+this.getInstanceid()+ " entropy is calculated : "+result);
   		return result;
   			
   	}
-  	
-  	
-  	
-  
-  	
-  	
+ 
   	// assign 0 to percentageOfLabel list in the beginning
   	public void createListForLabelPercentage( Integer numberOfLabel)
   	{
@@ -72,16 +64,14 @@ public class INSTANCE implements finder {
   	  		this.percentageOfLabel.set(i, percentage);
   		}	
   		}	
-  		logger.info("instance id: "+this.getInstanceid()+ " class labels and percentages are calculated " );
+  		//logger.info("instance id: "+this.getInstanceid()+ " class labels and percentages are calculated " );
   	}	
   	
   	//finding Max Frequent Label
-  	public LABEL findMaxFrequentLabel(ArrayList<LABEL> allLabels,Logger logger) {
+  	public Label findMaxFrequentLabel(ArrayList<Label> allLabels,Logger logger) {
   		Integer index = this.countOfLabel.indexOf(Collections.max(this.countOfLabel));
-  		logger.info("instance id: "+this.getInstanceid()+ "  most frequent class label  is calculated : " +allLabels.get(index) );
-  		return allLabels.get(index);
-  		
-  		
+  		//logger.info("instance id: "+this.getInstanceid()+ "  most frequent class label  is calculated : " +allLabels.get(index).getLabelid() );
+  		return allLabels.get(index);	
   	}
   	
   	
@@ -90,7 +80,7 @@ public class INSTANCE implements finder {
   		if(this.totalNumberOfLabelAssignment!=0) {
   		   Integer numberOfLabelled=Collections.max(this.countOfLabel);
   		   Integer percentage = (numberOfLabelled*100) / this.totalNumberOfLabelAssignment;
-  		   logger.info("instance id: "+this.getInstanceid()+ "  most frequent class label percentage is calculated " + allLabels.get(index).getLabelid() );
+  		   //logger.info("instance id: "+this.getInstanceid()+ "  most frequent class label percentage is calculated\n"+percentage );
   		   return percentage;	
   		}
   		else {
@@ -99,14 +89,14 @@ public class INSTANCE implements finder {
   		}	
   	}
   	// adding unique user into uniqueUsers list 
-  	public void checkUniqueUsers( USER user , Logger logger) {
+  	public void checkUniqueUsers( User user , Logger logger) {
   		if(this.uniqueUsers.size()==0) {
   			this.uniqueUsers.add(user);
   		}
   		else if(!this.uniqueUsers.contains(user)) {
   				this.uniqueUsers.add(user);
   		}
-  		logger.info("instance id: "+this.getInstanceid()+ "  number of unique users is calculated " );
+  		//logger.info("instance id: "+this.getInstanceid()+ "  number of unique users is calculated " );
   	}
   	// calculating Total Number Of Unique Label
 	public Integer calculateTotalNumberOfUniqueLabel( Logger logger) {
@@ -115,22 +105,23 @@ public class INSTANCE implements finder {
   		for(int i=0; i<this.countOfLabel.size(); i++)
   			if(this.countOfLabel.get(i)!=0)
   				count++;
-  		logger.info("instance id: "+this.getInstanceid()+ " total number of unique label is calculated " );
+  		//logger.info("instance id: "+this.getInstanceid()+ " total number of unique label is calculated "+count );
   		return count;
   	}
 	
 	
   	//calculating Total Number Of Label Assignment
   	public void calculateTotalNumberOfLabelAssignment( Logger logger) {
-  		logger.info("instance id: "+this.getInstanceid()+ " total number of label assigmnet is calculated : " + this.totalNumberOfLabelAssignment);
   		this.totalNumberOfLabelAssignment++;
+  		//logger.info("instance id: "+this.getInstanceid()+ " total number of label assigmnet is calculated : " + this.totalNumberOfLabelAssignment);
+  		
   		
   	}
  // assign 0 to countOfLabel list in the beginning
-  	public void createListForLabelCount( Integer numberOfLabel)
+  	public void createListForLabelCount(Integer numberOfLabel)
   	{
   		for(int i=0; i<numberOfLabel ;i++) {
-     		countOfLabel.add(0);}
+     		this.countOfLabel.add(0);}
   	}
   	
   	// increase count of label
@@ -138,13 +129,42 @@ public class INSTANCE implements finder {
 		this.countOfLabel.set(id-1, this.countOfLabel.get(id-1)+1);
 		
 	}
+	 // assign 0 to countOfLabel list in the beginning
+  	public void createListForLabelCountHU(Integer numberOfLabel)
+  	{
+  		for(int i=0; i<numberOfLabel ;i++) {
+     		this.countOfLabelforHumanUsers.add(0);}
+  	}
+  	
+  	// increase count of label
+	public void setLabelCountHU( Integer id) {
+		this.countOfLabelforHumanUsers.set(id-1, this.countOfLabelforHumanUsers.get(id-1)+1);
+		
+	}
+	
+   //finding Max Frequent Label
+  	public Label findMaxFrequentLabelHU(ArrayList<Label> allLabels,Logger logger) {
+  		Integer index = this.countOfLabelforHumanUsers.indexOf(Collections.max(this.countOfLabelforHumanUsers));
+  		Integer label = Collections.max(this.countOfLabelforHumanUsers);
+        ArrayList<Integer> gainLabelsIndex= new ArrayList<>();
+  		int i=0; int random=0;
+  		for(i=0; i<countOfLabelforHumanUsers.size(); i++) {
+  			if(countOfLabelforHumanUsers.get(i)==label) {
+  				gainLabelsIndex.add(i);
+  			}
+  		}
+  		if(gainLabelsIndex.size()>1) {
+  			random=(int)(Math.random()*(gainLabelsIndex.size()));
+  			index=gainLabelsIndex.get(random);
+  		}
+ 	   
+  		logger.info("instance id: "+this.getInstanceid()+ "  most frequent class label  is calculated : " +allLabels.get(index).getLabelid() );
+  		return allLabels.get(index);	
+  	}
+    
 
-	//adding label to labelInInstance
-   public void addLabel(LABEL label) {
-	   this.labelInInstance.add(label);
-   }
    //find instances according to their ids
-	public int find(ArrayList<LABEL>list,ArrayList<INSTANCE>listofinstance,Long instanceid) {
+	public int find(ArrayList<User>user,ArrayList<Label>list,ArrayList<Instancee>listofinstance,Long instanceid) {
 		for(int c=0;c<listofinstance.size();c++) {
 			if(instanceid==listofinstance.get(c).id) {
 				return c;
@@ -154,11 +174,11 @@ public class INSTANCE implements finder {
 	}
   	//////////////////////////////////////////////////////////// GETTERS & SETTERS
    
-	public ArrayList<USER> getUniqueUsers() {
+	public ArrayList<User> getUniqueUsers() {
 		return uniqueUsers;
 	}
 
-	public void setUniqueUsers(ArrayList<USER> uniqueUsers) {
+	public void setUniqueUsers(ArrayList<User> uniqueUsers) {
 		this.uniqueUsers = uniqueUsers;
 	}
    
@@ -170,14 +190,7 @@ public class INSTANCE implements finder {
 		this.totalNumberOfLabelAssignment = totalNumberOfLabelAssignment;
 	}
     
-	public ArrayList<LABEL> getLabelInInstance() {
-		return labelInInstance;
-	}
-
-	public void setLabelInInstance(ArrayList<LABEL> labelInInstance) {
-		this.labelInInstance = labelInInstance;
-	}
-
+	
 	public ArrayList<Integer> getCountOfLabel() {
 		return countOfLabel;
 	}
@@ -212,20 +225,20 @@ public class INSTANCE implements finder {
 		this.instance = instance;
 	}
 
-	public ArrayList<LABEL> getLabels() {
-		return labelInInstance;
-	}
-
-	public void setLabels(ArrayList<LABEL> labelInInstance) {
-		this.labelInInstance = labelInInstance;
-	}
-
 	public ArrayList<Integer> getPercentageOfLabel() {
 		return percentageOfLabel;
 	}
 
 	public void setPercentageOfLabel(ArrayList<Integer> percentageOfLabel) {
 		this.percentageOfLabel = percentageOfLabel;
+	}
+
+	public ArrayList<Integer> getCountOfLabelforHumanUsers() {
+		return countOfLabelforHumanUsers;
+	}
+
+	public void setCountOfLabelforHumanUsers(ArrayList<Integer> countOfLabelforHumanUsers) {
+		this.countOfLabelforHumanUsers = countOfLabelforHumanUsers;
 	}
     
 	
